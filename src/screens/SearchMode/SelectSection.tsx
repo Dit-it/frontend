@@ -12,10 +12,9 @@ import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
-import Swiper from 'react-native-swiper';
-import SeaItem, {SeaItemProps} from '@/components/NaverMap/SeaItem';
-import Carousel from 'react-native-snap-carousel';
-import {ViewStyle} from 'react-native';
+import CarouselContainer from '@/components/NaverMap/Carousel';
+// import Carousel from '@/components/NaverMap/Carousel';
+
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const SelectSection = () => {
@@ -31,25 +30,8 @@ const SelectSection = () => {
     {label: 'Item 8', value: '8'},
   ];
 
-  const seaData = [
-    {location: '해운대', seaName: '해안선A', seaLength: '25,000'},
-    {location: '광안리', seaName: '해안선B', seaLength: '30,000'},
-    {location: '송정', seaName: '해안선C', seaLength: '30,000'},
-  ];
-
   const [value, setValue] = useState<string | null>(null);
   const [isFocus, setIsFocus] = useState(false);
-
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <CustomText style={[styles.label, isFocus && {color: color.primary}]}>
-          Dropdown label
-        </CustomText>
-      );
-    }
-    return null;
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,13 +40,11 @@ const SelectSection = () => {
     });
   }, [navigation]);
 
-  const renderItem = ({item}: {item: SeaItemProps}) => (
-    <SeaItem
-      location={item.location}
-      seaLength={item.seaLength}
-      seaName={item.seaName}
-    />
-  );
+  const seaData = [
+    {location: '해운대', seaName: '해안선A', seaLength: '25000'},
+    {location: '광안리', seaName: '해안선B', seaLength: '30000'},
+    {location: '송정', seaName: '해안선C', seaLength: '30000'},
+  ];
 
   return (
     <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -129,33 +109,26 @@ const SelectSection = () => {
             </View>
           </View>
         </View>
-        <NaverMap />
+        {/* <NaverMap /> */}
 
-        {/* <Swiper
-          style={styles.swiperContainer}
-          showsButtons={false}
-          showsPagination={false}
-          autoplay={false}>
-
-          {seaData.map(list => (
-            <SeaItem
-              location={list.location}
-              seaName={list.seaName}
-              seaLength={list.seaLength}
-            />
-          ))}
-        </Swiper> */}
-        {/* <View style={styles.flatList}> */}
-        {/* <Carousel
-          layout={'default'}
-          data={seaData}
-          renderItem={renderItem}
-          sliderWidth={400}
-          itemWidth={300}
-          style={styles.flatList}
-          containerCustomStyle={{paddingVertical: 10}}
-        /> */}
-        {/* </View> */}
+        {/* <View style={styles.appBackground}>
+          <View style={styles.carouselBox}>
+            <Carousel />
+          </View>
+        </View> */}
+        {/* <View>
+          <Carousel
+            images={[
+              'https://www.didit.store/img/ggu.png',
+              'https://img.hankyung.com/photo/202309/AKR20230901035200005_01_i_P4.jpg',
+              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSayzFV4TvY_t5ynst6FMKEchrntX5faQ6xVg&s',
+            ]}
+            gap={10}
+            offset={36}
+            pageWidth={screenWidth - (10 + 36) * 2}
+          />
+        </View> */}
+        {/* <CarouselContainer /> */}
       </View>
     </SafeAreaView>
   );
@@ -236,5 +209,19 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     height: 200,
     // width: '70%',
+  },
+  carouselContainer: {
+    width: '100%',
+  },
+  appBackground: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  carouselBox: {
+    width: '100%',
+    height: '60%',
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
 });

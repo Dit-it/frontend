@@ -10,7 +10,7 @@ export interface SeaItemProps {
   seaLength: string;
 }
 
-const SeaItem = ({location, seaLength, seaName}: SeaItemProps) => {
+const SeaItem = ({location, seaName, seaLength}: SeaItemProps) => {
   return (
     <View style={styles.seatItemWrapper}>
       <View>
