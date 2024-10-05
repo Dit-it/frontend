@@ -87,5 +87,13 @@
     <key>NMFClientId</key>
     <string>05ioi8470v</string>
 
+    <!-- 카메라 및 갤러리 권한 허용 -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like to use your camera</string>
+    <key>NSPhotoLibraryAppUsageDescription</key>
+    <string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+
 </dict>
 </plist>
