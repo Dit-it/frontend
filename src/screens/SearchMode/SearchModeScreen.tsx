@@ -13,6 +13,7 @@ import color from '@/constant/color';
 import PhotoPickerModal from "@components/Common/PhotoPickerModal.tsx";
 import {Asset} from "react-native-image-picker";
 import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
+import { showCameraModalHandler } from '@/services/cameraPermission';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
