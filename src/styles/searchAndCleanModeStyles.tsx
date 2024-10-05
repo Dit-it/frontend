@@ -35,7 +35,7 @@ export const searchAndCleanModeStyles = StyleSheet.create({
     },
     inputPosition: {
         position: 'relative',
-        width: '49%',
+        width: '100%',
     },
     input: {
         width: '100%',

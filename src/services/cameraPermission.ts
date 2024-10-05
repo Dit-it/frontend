@@ -17,8 +17,6 @@ export const showCameraModalHandler = async () => {
         ]
       : [
           PERMISSIONS.ANDROID.CAMERA, // Android 카메라 권한
-          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE, // Android 사진 라이브러리 권한
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, // Android 미디어 라이브러리 권한
         ];
 
   try {

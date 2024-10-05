@@ -5,9 +5,12 @@ import CustomText from "@components/Common/CustomText.tsx";
 
 
 // @ts-ignore
-const PhotoPickerModal = ({modalVisible, setModalVisible,
+const PhotoPickerModal = ({
                               // @ts-ignore
-                              setSearchImage}) => {
+                              modalVisible, setModalVisible,
+                              // @ts-ignore
+                              setPicture
+                          }) => {
 
     const requestCameraPermission = async () => {
         try {
@@ -50,7 +53,7 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
                 Alert.alert("오류 발생", result.errorMessage);
             } else {
                 // @ts-ignore
-                setSearchImage(result.assets[0]);
+                setPicture(result.assets[0]);
                 setModalVisible(false);
             }
         } catch (error) {
@@ -59,11 +62,11 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
         }
     };
 
-  const openGallery = async () => {
-    try {
-      const options = {
-        mediaType: 'photo',
-      };
+    const openGallery = async () => {
+        try {
+            const options = {
+                mediaType: 'photo',
+            };
 
             const result: ImagePickerResponse = await launchImageLibrary(options as ImageLibraryOptions);
             if (result.didCancel) {
@@ -73,7 +76,7 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
                 Alert.alert("오류 발생", result.errorMessage);
             } else {
                 // @ts-ignore
-                setSearchImage(result.assets[0]);
+                setPicture(result.assets[0]);
                 setModalVisible(false);
             }
         } catch (error) {
@@ -82,67 +85,67 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
         }
     };
 
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <TouchableOpacity onPress={openCamera} style={styles.optionButton}>
-            <CustomText style={styles.optionText}>카메라</CustomText>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={openGallery} style={styles.optionButton}>
-            <CustomText style={styles.optionText}>갤러리</CustomText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => setModalVisible(false)}
-            style={styles.optionButton}>
-            <CustomText style={styles.optionText}>취소</CustomText>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
+    return (
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                    <TouchableOpacity onPress={openCamera} style={styles.optionButton}>
+                        <CustomText style={styles.optionText}>카메라</CustomText>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={openGallery} style={styles.optionButton}>
+                        <CustomText style={styles.optionText}>갤러리</CustomText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={styles.optionButton}>
+                        <CustomText style={styles.optionText}>취소</CustomText>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#2196F3',
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  optionButton: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  optionText: {
-    textAlign: 'center',
-    fontSize: 18,
-    color: '#000',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        backgroundColor: '#2196F3',
+        padding: 10,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    optionButton: {
+        paddingVertical: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+    },
+    optionText: {
+        textAlign: 'center',
+        fontSize: 18,
+        color: '#000',
+    },
 });
 
 export default PhotoPickerModal;

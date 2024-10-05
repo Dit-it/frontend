@@ -25,6 +25,7 @@ export const LoginScreen = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   const loginSubmitHandler = () => {
+    // navigation.navigate('CleanupMode');
     navigation.navigate('SearchMode');
   };
 
