@@ -47,12 +47,11 @@ const CarouselContainer = ({data}: CarouselContainerProps) => {
         }}
         onProgressChange={progress}
         renderItem={item => {
-          console.log(item);
           return (
             <SeaItem
-              location={item.item.location}
-              seaName={item.item.seaName}
-              seaLength={item.item.seaLength}
+                sigunguName={item.item.sigunguName}
+                coastName={item.item.coastName}
+                coastlineLen={item.item.coastlineLen}
             />
           );
         }}

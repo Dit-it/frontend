@@ -6,26 +6,26 @@ import color from '@/constant/color';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 export interface SeaItemProps {
-  location: string;
-  seaName: string;
-  seaLength: string;
+  sigunguName: string;
+  coastName: string;
+  coastlineLen: string;
 }
 
-const SeaItem = ({location, seaName, seaLength}: SeaItemProps) => {
+const SeaItem = ({sigunguName, coastName, coastlineLen}: SeaItemProps) => {
   return (
     <View style={styles.seatItemWrapper}>
       <View style={styles.textContainer}>
         <View style={styles.textWrapper}>
           <CustomText style={styles.mainTitle}>행정구역</CustomText>
-          <CustomText style={styles.subTitle}>{location}</CustomText>
+          <CustomText style={styles.subTitle}>{sigunguName}</CustomText>
         </View>
         <View style={styles.textWrapper}>
           <CustomText style={styles.mainTitle}>해안명</CustomText>
-          <CustomText style={styles.subTitle}>{seaName}</CustomText>
+          <CustomText style={styles.subTitle}>{coastName}</CustomText>
         </View>
         <View style={styles.textWrapper}>
           <CustomText style={styles.mainTitle}>해안길이</CustomText>
-          <CustomText style={styles.subTitle}>{seaLength}</CustomText>
+          <CustomText style={styles.subTitle}>{coastlineLen}</CustomText>
         </View>
       </View>
 

@@ -26,10 +26,10 @@ const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSel
         // e에는 클릭된 위치의 latitude, longitude 값이 포함됨
         if (ref.current) {
             ref.current.animateCameraTo({
-                latitude: e.latitude, // 카메라를 이동시킬 지점의 위도
-                longitude: e.longitude, // 카메라를 이동시킬 지점의 경도
-                zoom: 12, // 원하는 줌 레벨 (생략 가능)
-                duration: 1000, // 애니메이션 지속 시간 (ms 단위)
+                latitude: e.latitude,
+                longitude: e.longitude,
+                zoom: 12,
+                duration: 1000,
             });
         }
     };
