@@ -6,7 +6,9 @@ import {RootStackParamList} from './navigationTypes';
 import SearchModeScreen from './SearchMode/SearchModeScreen';
 import {LoginScreen} from './Login/LoginScreen';
 import SelectSection from './SearchMode/SelectSection';
+import SelectSigungu from './SearchMode/SelectSigungu.tsx';
 import CleanModeScreen from "@screens/CleanMode/CleanModeScreen.tsx";
+
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,6 +26,7 @@ const Navigator = () => {
         options={{headerShown: false}}
       />
       <RootStack.Screen name="SearchMode" component={SearchModeScreen} />
+      <RootStack.Screen name="SelectSigungu" component={SelectSigungu} />
       <RootStack.Screen name="SelectSection" component={SelectSection} />
       <RootStack.Screen
         name="Splash"

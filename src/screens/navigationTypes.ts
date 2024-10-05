@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   SearchMode: undefined;
+  SelectSigungu: undefined;
   SelectSection: undefined;
   CleanupMode: undefined;
 };
