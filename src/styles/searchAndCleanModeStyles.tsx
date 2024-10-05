@@ -35,7 +35,7 @@ export const searchAndCleanModeStyles = StyleSheet.create({
     },
     inputPosition: {
         position: 'relative',
-        width: '100%',
+        width: '49%',
     },
     input: {
         width: '100%',
@@ -44,14 +44,14 @@ export const searchAndCleanModeStyles = StyleSheet.create({
         // borderWidth: 1,
         paddingHorizontal: 10,
         borderRadius: 8,
-        paddingTop: 15,
+        paddingTop: 20,
         height: 60,
         backgroundColor: color.gray100,
     },
     inputAbsoluteText: {
         position: 'absolute',
         left: 10,
-        top: 10,
+        top: 5,
         color: color.gray500,
         fontSize: heightPercentageToDP('1.4%'),
         zIndex: 1,
@@ -69,5 +69,8 @@ export const searchAndCleanModeStyles = StyleSheet.create({
         // paddingTop: 10,
         height: 70,
         borderRadius: 0,
+    },
+    lastItem: {
+        marginBottom: 120,
     },
 })

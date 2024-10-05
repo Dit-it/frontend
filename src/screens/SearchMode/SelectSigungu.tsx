@@ -8,8 +8,7 @@ import {RootStackParamList} from "@screens/navigationTypes.ts";
 import CustomText from "@components/Common/CustomText.tsx";
 import HeaderLeftGoBack from "@components/Common/HeaderLeftGoBack.tsx";
 import {useNavigation} from "@react-navigation/native";
-import NaverMap from '@/components/NaverMap/NaverMap';
-import {parse} from "@babel/core";
+import SigunguPolygonMap from '@components/NaverMap/SigunguPolygonMap.tsx';
 import {CustomButton} from "@components/Common/CustomButton.tsx";
 
 
@@ -38,7 +37,7 @@ const SelectSigungu = () => {
         try {
 
         console.log('getSigunguList');
-        const data = await (await fetch('http://10.30.1.63:8080/api/v1/sigunguInfo')).json();
+        const data = await (await fetch('https://www.didit.store/api/v1/sigunguInfo')).json();
         setSigunguList(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -55,6 +54,7 @@ const SelectSigungu = () => {
 
             for (const sigungu of sigunguList) {
                 let tempArray = [];
+                // @ts-ignore
                 let geometry = JSON.parse(sigungu.sigunguPolygon).coordinates;
                 let flatArray = geometry.flat(Infinity);
                 for (let i = 0; i < flatArray.length - 2; i+=2) {
@@ -71,7 +71,7 @@ const SelectSigungu = () => {
             <View style={globalStyles.commonContainer}>
                 <View style={styles.mapContainer}>
                     {coordinates.length > 0 && (
-                        <NaverMap
+                        <SigunguPolygonMap
                             polygon={coordinates}
                             regionList={sigunguList}
                             mapType={'minMap'}
@@ -99,7 +99,10 @@ const SelectSigungu = () => {
                     </View>
                 </View>
                 <View style={styles.infoText}>
-                    <CustomButton onPress={() => navigation.navigate('SelectSection')}>
+                    <CustomButton callBack={() => navigation.navigate('SelectSection', {
+                        sigunguCode:  sigunguList[selectedRegionIndex].sigunguCode,
+                        sigunguName:  sigunguList[selectedRegionIndex].sigunguName
+                    })}>
                         <CustomText style={styles.buttonText}>다음</CustomText>
                     </CustomButton>
                 </View>

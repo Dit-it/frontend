@@ -1,18 +1,17 @@
-import {NaverMapPolygonOverlay, NaverMapView, Region} from '@mj-studio/react-native-naver-map';
+import {Coord, NaverMapPolygonOverlay, NaverMapView, Region} from '@mj-studio/react-native-naver-map';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 // @ts-ignore
-const NaverMap = ( {polygon, regionList,
+const SigunguPolygonMap = ({polygon, regionList,
                        mapType = 'fullMap', selectedRegionIndex, setSelectedRegionIndex} ) => {
 
     const [selectedPolygonIndex, setSelectedPolygonIndex] = useState(selectedRegionIndex);
-    const [selectedSigunguCode, setSelectedSigunguCode] = useState(selectedRegionIndex);
 
     useEffect(() => {
         if(selectedPolygonIndex != null)
-            setSelectedSigunguCode(regionList[selectedPolygonIndex].sigunguCode);
+        setSelectedRegionIndex(selectedPolygonIndex);
     }, [selectedPolygonIndex])
 
     useEffect(() => {
@@ -46,7 +45,7 @@ const NaverMap = ( {polygon, regionList,
   </NaverMapView>
 };
 
-export default NaverMap;
+export default SigunguPolygonMap;
 
 const styles = StyleSheet.create({
   minMap: {

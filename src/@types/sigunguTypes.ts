@@ -9,3 +9,17 @@ export interface ISigunguDropData {
   label: string;
   value: string;
 }
+
+export interface ICoastData {
+  coastCode: string;
+  coastName: string;
+  coastlineLen: number;
+  coastLonlat: string;
+  sigunguCode: string;
+  coastGeom: string;
+}
+
+export interface ICoastDropData {
+  label: string;
+  value: string;
+}

@@ -38,7 +38,8 @@
     "react-native-svg": "^15.7.1",
     "react-native-swiper": "^1.6.0",
     "react-native-vector-icons": "^10.2.0",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "@react-native-community/geolocation": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
