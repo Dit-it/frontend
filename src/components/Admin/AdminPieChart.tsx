@@ -5,7 +5,7 @@ import {
 } from '@/@types/adminChartTypes';
 import {ISigunguDropData} from '@/@types/sigunguTypes';
 import color from '@/constant/color';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {View, Text, Dimensions, SafeAreaView, StyleSheet} from 'react-native';
 import {PieChart} from 'react-native-chart-kit';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -22,6 +22,7 @@ interface AdminPieChartProps {
   showFocus: () => void;
   hideFocus: () => void;
   pieData: IMajorTypeOfLitterData[] | undefined;
+  refetchMajorType: () => void;
 }
 
 const AdminPieChart = ({
@@ -32,6 +33,7 @@ const AdminPieChart = ({
   hideFocus,
   sigunguList,
   pieData,
+  refetchMajorType,
 }: AdminPieChartProps) => {
   const [data, setData] = useState<IPieData[]>();
 
@@ -52,23 +54,22 @@ const AdminPieChart = ({
     return result;
   };
 
-  useEffect(() => {
-    if (pieData && pieData.length > 0) {
-      let updatedData: IPieData[] = [];
-      pieData.map(list => {
-        console.log('pieData: ', pieData);
+  const filteredPieData = useMemo(() => {
+    if (!pieData) return [];
+    return pieData.filter(list => list.sigunguCode === sigunguValue?.value);
+  }, [pieData, sigunguValue]);
 
-        updatedData.push({
-          name: list.litterTypeName,
-          population:
-            list.totalCleanupLitter && Number(list.totalCleanupLitter),
-          color: findColorHandler(list.litterTypeName),
-        });
-      });
+  useEffect(() => {
+    if (filteredPieData && filteredPieData.length > 0) {
+      const updatedData: IPieData[] = filteredPieData.map(list => ({
+        name: list.litterTypeName,
+        population: Number(list.totalCleanupLitter) || 0,
+        color: findColorHandler(list.litterTypeName),
+      }));
 
       setData(updatedData);
     }
-  }, [pieData]);
+  }, [filteredPieData]);
 
   return (
     <SafeAreaView
@@ -104,6 +105,7 @@ const AdminPieChart = ({
               label: item.label,
               value: item.value,
             });
+            refetchMajorType();
             hideFocus();
           }}
         />

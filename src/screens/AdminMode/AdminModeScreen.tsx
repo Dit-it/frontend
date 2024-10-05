@@ -8,7 +8,7 @@ import AdminLineChart from '@/components/Admin/AdminLineChart';
 import AdminPieChart from '@/components/Admin/AdminPieChart';
 import CustomText from '@/components/Common/CustomText';
 import {globalStyles} from '@/styles/globalStyles';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   Button,
   Dimensions,
@@ -24,16 +24,26 @@ import {
 import {LineChart} from 'react-native-chart-kit';
 import {useQuery} from 'react-query';
 import {filter} from '../../../node_modules/domutils/lib/esm/querying';
-import {ICoastData, IMajorTypeOfLitterData} from '@/@types/adminChartTypes';
+import {
+  ICoastData,
+  ICoastDataDropdown,
+  IMajorTypeOfLitterData,
+} from '@/@types/adminChartTypes';
 import {Calendar} from 'react-native-calendars';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
 import NaverMapWithCircle from '@/components/NaverMap/NaverMapWithCircle';
 import {
+  Camera,
   NaverMapCircleOverlay,
   NaverMapMarkerOverlay,
   NaverMapView,
 } from '@mj-studio/react-native-naver-map';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Dropdown} from 'react-native-element-dropdown';
+import {useNavigation} from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigationTypes';
 
 const formatDate = (date: Date) => {
   const year = date.getFullYear();
@@ -42,53 +52,113 @@ const formatDate = (date: Date) => {
 
   return `${year}-${month}-${day}`;
 };
-
+type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 const AdminModeScreen = () => {
   const [sigunguList, setSigunguList] = useState<ISigunguDropData[]>();
   const [sigunguValue, setSigunguValue] = useState<ISigunguDropData | null>(
     null,
   );
+
+  const navigation = useNavigation<RegisterScreenNavigationProp>();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '관리자 모드',
+      // headerLeft: () => <HeaderLeftGoBack navigation={navigation}/>,
+    });
+  }, [navigation]);
+
+  const [coastList, setCoastList] = useState<ICoastDataDropdown[]>();
+  const [coastValue, setCoastValue] = useState<ICoastDataDropdown | null>(null);
   const [isFocus, setIsFocus] = useState(false);
   const [startDate, setStartDate] = useState(formatDate(new Date()));
   const [endDate, setEndDate] = useState(formatDate(new Date()));
   const [isStartDateModalVisible, setStartDateModalVisible] = useState(false);
   const [isEndDateModalVisible, setEndDateModalVisible] = useState(false);
+  const [isMapVisible, setIsMapVisible] = useState(false);
+  const [cameraPosition, setCameraPosition] = useState<Camera>({
+    latitude: 35.1796, // 초기 위도
+    longitude: 129.0756, // 초기 경도
+    zoom: 9,
+  });
 
-  const {data: cleanUpDataResponse} = useQuery<ICoastData[]>(
+  const {data: cleanUpDataResponse, refetch: refetchCleanUpData} = useQuery<
+    ICoastData[]
+  >(
     ['CLEANUPDATA'],
-    () => getCleanupDataGroupBySigungu(),
+    () => getCleanupDataGroupBySigungu(startDate, endDate),
+    {enabled: false}, // 자동 요청 비활성화
   );
+
+  // useEffect(() => {
+  //   console.log('cleanUpDataResponse: ', cleanUpDataResponse);
+  // }, [cleanUpDataResponse]);
 
   useEffect(() => {
-    console.log('cleanUpDataResponse: ', cleanUpDataResponse);
-  }, [cleanUpDataResponse]);
+    if (cleanUpDataResponse) {
+      const coastData: ICoastDataDropdown[] = cleanUpDataResponse.map(list => {
+        const parsedLonLat = JSON.parse(list.coastLonlat.toString()); // JSON 문자열을 객체로 변환
+        const [longitude, latitude] = parsedLonLat.coordinates; // 위도와 경도 추출
 
-  const {data: getMajorTypeOfLitterData} = useQuery<IMajorTypeOfLitterData[]>(
+        return {
+          label: list.coastName,
+          value: [longitude, latitude] as [number, number], // type assertion 추가
+        };
+      });
+      setCoastList(coastData); // 상태 업데이트
+    }
+  }, [cleanUpDataResponse]); // cleanUpDataResponse가 변경될 때만 실행
+
+  const {data: getMajorTypeOfLitterData, refetch: refetchMajorType} = useQuery<
+    IMajorTypeOfLitterData[]
+  >(
     ['MAJORTYPE', sigunguValue],
-    () => getMajorTypeOfLitter(),
+    () => getMajorTypeOfLitter(startDate, endDate),
+    {enabled: false}, // 자동 요청 비활성화
   );
+
+  const handleSearch = () => {
+    refetchMajorType();
+    refetchCleanUpData();
+  };
 
   const circleSize = (totalSize: number) => {
     const baseSize = 20; // 기본 사이즈
     return baseSize + Math.floor(totalSize / 50) * 5; // 50 단위로 사이즈 증가
   };
 
-  const getSigunguInfoHandler = async () => {
-    const updateList: ISigunguDropData[] = [];
+  useEffect(() => {
+    const getSigunguInfoHandler = async () => {
+      const updateList: ISigunguDropData[] = [];
 
-    const result = await getSigunguInfo();
-    if (result.length > 0) {
-      result.map(list => {
-        const data = {
-          label: list.sigunguName,
-          value: list.sigunguCode,
-        };
-        updateList.push(data);
-      });
-    }
-    setSigunguList(updateList);
+      const result = await getSigunguInfo();
+      if (result.length > 0) {
+        result.map(list => {
+          const data = {
+            label: list.sigunguName,
+            value: list.sigunguCode,
+          };
+          updateList.push(data);
+        });
+      }
+      setSigunguList(updateList);
+      if (sigunguValue === null) {
+        setSigunguValue(updateList[0]);
+      }
+      handleSearch();
+    };
+    getSigunguInfoHandler();
+  }, []);
+
+  const initMapModal = () => {
+    setCameraPosition({
+      latitude: 35.1796, // 초기 위도
+      longitude: 129.0756, // 초기 경도
+      zoom: 9,
+    });
+
+    setIsMapVisible(true);
   };
-  getSigunguInfoHandler();
 
   return (
     <>
@@ -109,7 +179,7 @@ const AdminModeScreen = () => {
               autoCapitalize="none"
               onPress={() => setEndDateModalVisible(true)}
             />
-            <TouchableOpacity style={styles.searchBtn}>
+            <TouchableOpacity style={styles.searchBtn} onPress={handleSearch}>
               <CustomText>검색</CustomText>
             </TouchableOpacity>
           </View>
@@ -124,6 +194,7 @@ const AdminModeScreen = () => {
               pieData={getMajorTypeOfLitterData?.filter(
                 list => list.sigunguCode === sigunguValue?.value,
               )}
+              refetchMajorType={refetchMajorType}
             />
           </View>
           {/* <AdminLineChart /> */}
@@ -137,8 +208,8 @@ const AdminModeScreen = () => {
                 marginBottom: 6,
                 marginTop: 6,
               }}>
-              <TouchableOpacity>
-                <CustomText>확대하기</CustomText>
+              <TouchableOpacity onPress={() => setIsMapVisible(true)}>
+                <CustomText onPress={initMapModal}>확대하기</CustomText>
               </TouchableOpacity>
               <View
                 style={{
@@ -148,7 +219,9 @@ const AdminModeScreen = () => {
                   marginHorizontal: 7,
                 }}></View>
               <TouchableOpacity onPress={() => getDownloadExcel()}>
-                <CustomText onPress={() => getDownloadExcel()}>다운로드</CustomText>
+                <CustomText onPress={() => getDownloadExcel()}>
+                  다운로드
+                </CustomText>
               </TouchableOpacity>
             </View>
             <NaverMapView
@@ -263,28 +336,100 @@ const AdminModeScreen = () => {
       </Modal>
 
       <Modal
-        visible={isStartDateModalVisible}
+        visible={isMapVisible}
         animationType="slide"
         transparent={true}
         onRequestClose={() => {
-          setStartDateModalVisible(false);
+          setIsMapVisible(false);
         }}>
-        <TouchableWithoutFeedback
-          onPress={() => setStartDateModalVisible(false)}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Calendar
-                onDayPress={day => {
-                  setStartDate(day.dateString);
-                  setStartDateModalVisible(false);
-                  setEndDateModalVisible(true);
-                }}
-                monthFormat="yyyy.MM"
-                maxDate={formatDate(new Date())}
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{flex: 1}}>
+            <View
+              style={{
+                height: '5%',
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingHorizontal: 20,
+                backgroundColor: 'white',
+              }}>
+              <CustomText style={{color: color.black}}>지도확대</CustomText>
+              <Icon
+                style={{marginLeft: 'auto'}}
+                size={30}
+                name="close-outline"
+                onPress={() => setIsMapVisible(false)}
               />
             </View>
+
+            <View
+              style={{
+                height: '10%',
+                backgroundColor: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Dropdown
+                style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                itemTextStyle={styles.itemContainerStyle}
+                iconStyle={styles.iconStyle}
+                data={coastList ? coastList : []}
+                maxHeight={200}
+                labelField="label"
+                valueField="value"
+                placeholder={!isFocus ? '해안 선택' : '...'}
+                searchPlaceholder="Search..."
+                search
+                value={sigunguValue?.value}
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setCoastValue({
+                    label: item.label,
+                    value: item.value,
+                  });
+                  const [longitude, latitude] = item.value; // item.value는 [longitude, latitude] 배열
+                  setCameraPosition({latitude, longitude, zoom: 15});
+                  setIsFocus(false);
+                }}
+              />
+            </View>
+            <NaverMapView
+              style={{height: '85%'}}
+              isShowLocationButton={false}
+              camera={cameraPosition}>
+              {cleanUpDataResponse &&
+                cleanUpDataResponse.map((list, index) => {
+                  const parsedLonLat = JSON.parse(list.coastLonlat.toString()); // JSON 문자열을 객체로 변환
+                  const [longitude, latitude] = parsedLonLat.coordinates; // 위도와 경도 추출
+                  return (
+                    <NaverMapMarkerOverlay
+                      key={index}
+                      latitude={latitude}
+                      longitude={longitude}
+                      width={circleSize(list.totalCleanupLitter)} // 원하는 크기로 조정 가능
+                      height={circleSize(list.totalCleanupLitter)}>
+                      <View
+                        style={[
+                          styles.marker,
+                          {
+                            width: circleSize(list.totalCleanupLitter),
+                            height: circleSize(list.totalCleanupLitter),
+                          },
+                        ]}>
+                        <Text style={styles.markerText}>
+                          {list.totalCleanupLitter}
+                        </Text>
+                      </View>
+                    </NaverMapMarkerOverlay>
+                  );
+                })}
+            </NaverMapView>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
     </>
   );
@@ -352,5 +497,35 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 13, // 텍스트 크기
     color: 'rgb(255, 255, 255)', // 텍스트 색상
+  },
+  dropdownContainer: {
+    backgroundColor: 'white',
+    width: '40%',
+    borderRadius: 100,
+  },
+  dropdown: {
+    height: '60%',
+    width: '90%',
+    borderColor: color.gray300,
+    borderWidth: 0.5,
+    borderRadius: 100,
+    paddingHorizontal: 12,
+  },
+  placeholderStyle: {
+    fontSize: heightPercentageToDP('1.8%'),
+  },
+  selectedTextStyle: {
+    fontSize: heightPercentageToDP('1.8%'),
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: heightPercentageToDP('1.8%'),
+  },
+  itemContainerStyle: {
+    fontSize: heightPercentageToDP('1.8%'),
   },
 });

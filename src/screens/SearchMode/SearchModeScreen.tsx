@@ -25,7 +25,7 @@ const SearchModeScreen = () => {
         useLayoutEffect(() => {
             navigation.setOptions({
                 headerTitle: '조사모드',
-                headerLeft: () => <HeaderLeftGoBack navigation={navigation}/>,
+                // headerLeft: () => <HeaderLeftGoBack navigation={navigation}/>,
             });
         }, [navigation]);
 

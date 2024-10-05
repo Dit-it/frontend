@@ -17,9 +17,12 @@ export const getCoastListByCode = async (sigunguCode: string | undefined) => {
   }
 };
 
-export const getCleanupDataGroupBySigungu = async () => {
+export const getCleanupDataGroupBySigungu = async (
+  startDate: string,
+  endDate: string,
+) => {
   const response = await instance.get(
-    `/api/v1/cleanup/cleanupDataGroupBySigungu/2023-09-01/2024-10-03`,
+    `/api/v1/cleanup/cleanupDataGroupBySigungu/${startDate}/${endDate}`,
   );
   return response.data;
 };

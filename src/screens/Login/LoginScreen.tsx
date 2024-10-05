@@ -2,12 +2,14 @@ import CustomText from '@/components/Common/CustomText';
 import color from '@/constant/color';
 import {globalStyles} from '@/styles/globalStyles';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
+  NativeSyntheticEvent,
   SafeAreaView,
   StyleSheet,
   TextInput,
+  TextInputChangeEventData,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -23,11 +25,20 @@ type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const LoginScreen = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
+  const [value, setValue] = useState('');
 
   const loginSubmitHandler = () => {
     // navigation.navigate('CleanupMode');
     // navigation.navigate('SelectSigungu');
-    navigation.navigate('SearchMode');
+    if (value === 'search') {
+      navigation.navigate('SearchMode');
+    } else if (value === 'admin') {
+      navigation.navigate('AdminMode');
+    } else if (value === 'clean') {
+      navigation.navigate('CleanupMode');
+    } else if (value === 'car') {
+      navigation.navigate('SearchMode');
+    }
   };
 
   return (
@@ -45,6 +56,9 @@ export const LoginScreen = () => {
             style={globalStyles.input}
             placeholder="아이디를 입력해주세요."
             autoCapitalize="none"
+            onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+              setValue(e.nativeEvent.text)
+            }
           />
           <TextInput
             style={globalStyles.input}

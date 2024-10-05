@@ -31,7 +31,12 @@ export interface ICoastData {
   totalCleanupLitter: number;
 }
 
-export interface ICoastLonlat{
+export interface ICoastLonlat {
   type: string;
-  coordinates: [number,number];
+  coordinates: [number, number];
+}
+
+export interface ICoastDataDropdown {
+  label: string;
+  value: [number, number];
 }

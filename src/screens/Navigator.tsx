@@ -14,7 +14,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
-    <RootStack.Navigator initialRouteName="SelectSigungu">
+    <RootStack.Navigator initialRouteName="Login">
       <RootStack.Screen
         name="Login"
         component={LoginScreen}
@@ -25,20 +25,37 @@ const Navigator = () => {
         component={RegisterScreen}
         options={{headerShown: false}}
       />
-      <RootStack.Screen name="SearchMode" component={SearchModeScreen} />
+      <RootStack.Screen
+        name="SearchMode"
+        component={SearchModeScreen}
+        options={{
+          headerBackButtonMenuEnabled: false,
+          headerBackVisible: false, // 뒤로가기 버튼 숨기기
+        }}
+      />
       <RootStack.Screen name="SelectSigungu" component={SelectSigungu} />
       <RootStack.Screen name="SelectSection" component={SelectSection} />
       <RootStack.Screen
         name="AdminMode"
         component={AdminModeScreen}
-        options={{headerShown: false}}
+        options={{
+          headerBackButtonMenuEnabled: false,
+          headerBackVisible: false, // 뒤로가기 버튼 숨기기
+        }}
       />
       <RootStack.Screen
         name="Splash"
         component={Splash}
         options={{headerShown: false}}
       />
-      <RootStack.Screen name="CleanupMode" component={CleanModeScreen} />
+      <RootStack.Screen
+        name="CleanupMode"
+        component={CleanModeScreen}
+        options={{
+          headerBackButtonMenuEnabled: false,
+          headerBackVisible: false, // 뒤로가기 버튼 숨기기
+        }}
+      />
     </RootStack.Navigator>
   );
 };
