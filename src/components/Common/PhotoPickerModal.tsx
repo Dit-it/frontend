@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Alert, Modal, PermissionsAndroid, Platform, StyleSheet, TouchableOpacity, View} from "react-native";
 import {ImageLibraryOptions, ImagePickerResponse, launchCamera, launchImageLibrary} from "react-native-image-picker";
 import CustomText from "@components/Common/CustomText.tsx";
+import { TouchableWithoutFeedback } from 'react-native';
 
 
 // @ts-ignore
@@ -91,6 +92,7 @@ const PhotoPickerModal = ({
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => setModalVisible(false)}>
+            <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <TouchableOpacity onPress={openCamera} style={styles.optionButton}>
@@ -106,6 +108,7 @@ const PhotoPickerModal = ({
                     </TouchableOpacity>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 };

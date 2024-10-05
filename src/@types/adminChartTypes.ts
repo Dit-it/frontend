@@ -18,6 +18,20 @@ export enum litterName {
   fishing = '폐어구류',
   floating = '부표류',
   trash = '생활쓰레기류',
-  bigTrash = '투기쓰레기류',
+  bigTrash = '대형 투기쓰레기류',
   tree = '초목류',
+}
+
+export interface ICoastData {
+  coastCode: number;
+  coastLonlat: ICoastLonlat; // JSON 형태의 문자열
+  coastName: string;
+  sigunguCode: string;
+  sigunguName: string;
+  totalCleanupLitter: number;
+}
+
+export interface ICoastLonlat{
+  type: string;
+  coordinates: [number,number];
 }

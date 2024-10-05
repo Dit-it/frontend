@@ -8,7 +8,7 @@ import {
 export const globalStyles = StyleSheet.create({
   commonSafeAreaFlex: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   commonContainer: {
     flex: 1,
