@@ -4,9 +4,13 @@ import CustomText from '../Common/CustomText';
 import {CustomButton} from '../Common/CustomButton';
 import color from '@/constant/color';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {useNavigation} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "@screens/navigationTypes.ts";
 
 export interface SeaItemProps {
   sigunguName: string;
+  coastCode: number;
   coastName: string;
   coastlineLen: string;
   coastLonlat: {
@@ -14,8 +18,11 @@ export interface SeaItemProps {
     lat: number; lon: number; }
   setCenter: (coastLonlat: { lat: number; lon: number; }) => void;
 }
+type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
-const SeaItem = ({sigunguName, coastName, coastlineLen, coastLonlat, setCenter}: SeaItemProps) => {
+
+const SeaItem = ({sigunguName, coastCode, coastName, coastlineLen, coastLonlat, setCenter}: SeaItemProps) => {
+  const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   return (
     <View style={styles.seatItemWrapper}>
@@ -34,7 +41,9 @@ const SeaItem = ({sigunguName, coastName, coastlineLen, coastLonlat, setCenter}:
         </View>
       </View>
 
-      <CustomButton>
+      <CustomButton callBack={() => navigation.navigate('SearchMode', {
+        coastCode: coastCode
+      })}>
         <CustomText
             style={{color: 'white'}}
             onPress={() => {
