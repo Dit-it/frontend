@@ -13,7 +13,7 @@ import color from '@/constant/color';
 import PhotoPickerModal from "@components/Common/PhotoPickerModal.tsx";
 import {Asset} from "react-native-image-picker";
 import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
-import { showCameraModalHandler } from '@/services/cameraPermission';
+import {showCameraModalHandler} from '@/services/cameraPermission';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -27,25 +27,19 @@ const SearchModeScreen = () => {
         });
     }, [navigation]);
 
-    const [searchImage, setSearchImage] = useState<Asset | null>(null);
+    const [observedPicture, setObservedPicture] = useState<Asset | null>(null);
     const [modalVisible, setModalVisible] = useState<Boolean>(false);
+    const [litterTypeCode, setLitterTypeCode] = useState<string | null>(null);
 
-  useEffect(() => {
-    console.log(searchImage);
-  }, [searchImage]);
-
-  const showModalHandler = async () => {
-    const result = await showCameraModalHandler();
-    console.log('result: ', result);
-    if (result) {
-      setModalVisible(true);
-    } else {
-      console.error('권한 요청 실패');
-    }
-  };
-    useEffect(() => {
-        console.log(searchImage);
-    }, [searchImage]);
+    const showModalHandler = async () => {
+        const result = await showCameraModalHandler();
+        console.log('result: ', result);
+        if (result) {
+            setModalVisible(true);
+        } else {
+            console.error('권한 요청 실패');
+        }
+    };
 
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -54,7 +48,7 @@ const SearchModeScreen = () => {
                     <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
                         <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
-                                style={searchAndCleanModeStyles.textFlex}>
+                                          style={searchAndCleanModeStyles.textFlex}>
                             <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
                             <Icon
                                 size={18}
@@ -68,20 +62,21 @@ const SearchModeScreen = () => {
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>오염정도 평가</CustomText>
 
-                    {searchImage && <View style={styles.containerStyle}><Image style={styles.searchImageStyle}
-                                                                               source={{uri: searchImage.uri}}/></View>}
+                    {observedPicture && <View style={styles.containerStyle}><Image style={styles.searchImageStyle}
+                                                                               source={{uri: observedPicture.uri}}/></View>}
                     <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
                                   callBack={showModalHandler}>
-                        <CustomText style={searchAndCleanModeStyles.imageButtonText}>{searchImage ? '사진수정' : '사진등록'}</CustomText>
+                        <CustomText
+                            style={searchAndCleanModeStyles.imageButtonText}>{observedPicture ? '사진수정' : '사진등록'}</CustomText>
                         <Icon size={20} name="add-circle" color={color.gray300}/>
                         <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
-                                          setSearchImage={setSearchImage}></PhotoPickerModal>
+                                          setSearchImage={setObservedPicture}></PhotoPickerModal>
                     </CustomButton>
                 </View>
 
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>주요 쓰레기 - 총부피기준</CustomText>
-                    <TrashListItem/>
+                    <TrashListItem litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}/>
                 </View>
 
             </ScrollView>
