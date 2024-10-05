@@ -68,13 +68,19 @@ const SelectSigungu = () => {
             <View style={globalStyles.commonContainer}>
                 <View style={styles.mapContainer}>
                     {coordinates.length > 0 && (
-                        <NaverMap polygon={coordinates} />
+                        <NaverMap
+                            polygon={coordinates}
+                            mapType={'minMap'}
+                        />
                     )}
 
                     {/* sigunguList가 존재하고 배열일 때 map 함수 사용 */}
                     {sigunguList.length > 0 ? (
                         sigunguList.map((item, index) => (
-                            <CustomText key={index}>{item.sigunguName}</CustomText>
+                            <CustomText key={index}>
+                                {item.sigunguName}
+                                {item.sigunguPolygon.substring(0, 20)}
+                            </CustomText>
                         ))
                     ) : (
                         <CustomText>Loading...</CustomText> // 데이터가 없을 때 로딩 메시지 표시

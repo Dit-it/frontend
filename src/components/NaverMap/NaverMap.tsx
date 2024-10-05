@@ -4,12 +4,12 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 // @ts-ignore
-const NaverMap = ( {polygon} ) => {
+const NaverMap = ( {polygon, mapType = 'fullMap'} ) => {
 
-    console.log(polygon.length);
+    console.log(polygon[0]);
 
   return <NaverMapView
-      style={styles.map}
+      style={[mapType === 'minMap' ? styles.minMap : styles.fullMap]}
       initialCamera={{
         latitude: 35.1796,
         longitude: 129.0756,
@@ -32,5 +32,6 @@ const NaverMap = ( {polygon} ) => {
 export default NaverMap;
 
 const styles = StyleSheet.create({
-  map: {height: heightPercentageToDP(40)},
+  minMap: {height: heightPercentageToDP(40)},
+  fullMap: {height: heightPercentageToDP(100)},
 });
