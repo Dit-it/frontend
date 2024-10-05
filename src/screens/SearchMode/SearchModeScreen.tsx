@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Image, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,} from 'react-native';
+import {Alert, Image, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,} from 'react-native';
 import {RootStackParamList} from '../navigationTypes';
 import CustomText from '@/components/Common/CustomText';
 import HeaderLeftGoBack from '@/components/Common/HeaderLeftGoBack';
@@ -74,7 +74,14 @@ const SearchModeScreen = () => {
             }
             formData.append('estimationLiter', estimationLiter);
 
-            postMultipartFormData(formData, 'api/v1/observe/register').then();
+            postMultipartFormData(formData, 'api/v1/observe/register').then(
+                response => {
+                    if (response) {
+                        Alert.alert('등록에 성공했습니다.');
+                        navigation.navigate('Login');
+                    }
+                }
+            );
         }
         return (
             <SafeAreaView style={globalStyles.commonSafeAreaFlex}>

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Pressable, SafeAreaView, StyleSheet, View,} from 'react-native';
+import {Alert, Pressable, SafeAreaView, StyleSheet, View,} from 'react-native';
 import {RootStackParamList} from '../navigationTypes';
 import HeaderLeftGoBack from '@/components/Common/HeaderLeftGoBack';
 import {globalStyles} from '@/styles/globalStyles';
@@ -79,7 +79,7 @@ const CleanModeScreen = () => {
     // post cleanup data
     const postCleanupData = async () => {
         const formData = new FormData();
-        formData.append('observedDataId', '2024100515470034');
+        formData.append('observedDataId', 'OD00000000000022');
         formData.append('beforeCleanupPicture', {
             uri: beforeCleanupPicture?.uri,
             type: beforeCleanupPicture?.type || 'image/jpeg',
@@ -104,7 +104,14 @@ const CleanModeScreen = () => {
         formData.append('lon', location?.longitude);
         formData.append('lat', location?.latitude);
 
-        postMultipartFormData(formData, 'api/v1/cleanup').then();
+        postMultipartFormData(formData, 'api/v1/cleanup').then(
+            response => {
+                if (response) {
+                    Alert.alert('등록에 성공했습니다.');
+                    navigation.navigate('Login');
+                }
+            }
+        );
     };
 
     return (

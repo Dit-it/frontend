@@ -25,9 +25,9 @@ export const LoginScreen = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   const loginSubmitHandler = () => {
-    navigation.navigate('CleanupMode');
+    // navigation.navigate('CleanupMode');
     // navigation.navigate('SelectSigungu');
-    // navigation.navigate('SearchMode');
+    navigation.navigate('SearchMode');
   };
 
   return (
