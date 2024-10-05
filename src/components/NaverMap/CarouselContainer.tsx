@@ -25,7 +25,7 @@ const CarouselContainer = ({data}: CarouselContainerProps) => {
   return (
     <View
       id="carousel-component"
-      style={{flex: 1, position: 'absolute', bottom: 50, zIndex: 30}}>
+      style={{flex: 1, position: 'absolute', bottom: 75, zIndex: 30}}>
       <Carousel
         autoPlay={false}
         autoPlayInterval={2000}

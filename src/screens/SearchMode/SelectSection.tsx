@@ -60,25 +60,25 @@ const SelectSection = () => {
         });
     }, [navigation]);
 
-    const getSigunguInfoHandler = async () => {
-        const updateList: ISigunguDropData[] = [];
+    // const getSigunguInfoHandler = async () => {
+    //     const updateList: ISigunguDropData[] = [];
 
-        const result = await getSigunguInfo();
-        // console.log('result: ', result);
+    //     const result = await getSigunguInfo();
+    //     // console.log('result: ', result);
 
-        if (result.length > 0) {
-            result.map(list => {
-                const data = {
-                    label: list.sigunguName,
-                    value: list.sigunguCode,
-                };
-                updateList.push(data);
-            });
-        }
-        setSigunguList(updateList);
-    };
+    //     if (result.length > 0) {
+    //         result.map(list => {
+    //             const data = {
+    //                 label: list.sigunguName,
+    //                 value: list.sigunguCode,
+    //             };
+    //             updateList.push(data);
+    //         });
+    //     }
+    //     setSigunguList(updateList);
+    // };
 
-    getSigunguInfoHandler();
+    // getSigunguInfoHandler();
 
 
     const {data: coastListResponseData} = useQuery(
@@ -108,7 +108,7 @@ const SelectSection = () => {
 
     const getSeaData = async () => {
         if(sigunguCode) {
-            const data = await (await fetch(`http://10.30.1.63:8080/api/v1/coast/listBySigungu/${sigunguCode}`)).json();
+            const data = await (await fetch(`https://www.didit.store/api/v1/coast/listBySigungu/${sigunguCode}`)).json();
             setSeaData(data);
         }
     }
@@ -116,7 +116,7 @@ const SelectSection = () => {
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
             <View style={styles.mapContainer}>
-                <View style={styles.topSectionWrapper}>
+                {/* <View style={styles.topSectionWrapper}>
                     <View style={styles.topSectionFlexColumn}>
                         <Icon size={30} name="list-outline" color="rgba(0,0,0,0.9)"/>
                         <CustomText>목록</CustomText>
@@ -124,7 +124,6 @@ const SelectSection = () => {
 
                     <View style={styles.topSectionFlex}>
                         <View style={styles.dropdownContainer}>
-                            {/* {renderLabel()} */}
                             <Dropdown
                                 style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
                                 placeholderStyle={styles.placeholderStyle}
@@ -152,7 +151,6 @@ const SelectSection = () => {
                         </View>
 
                         <View style={styles.dropdownContainer}>
-                            {/* {renderLabel()} */}
                             <Dropdown
                                 style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
                                 placeholderStyle={styles.placeholderStyle}
@@ -179,7 +177,7 @@ const SelectSection = () => {
                             />
                         </View>
                     </View>
-                </View>
+                </View> */}
                 <View style={styles.mapContainer}>
                     {coordinates.length > 0 && (
                         <CoastPolyLineMap

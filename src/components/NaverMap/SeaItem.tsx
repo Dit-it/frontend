@@ -42,8 +42,9 @@ const styles = StyleSheet.create({
   seatItemWrapper: {
     position: 'relative',
     width: '100%',
-    padding: 20,
-    height: 200,
+    paddingVertical:30,
+    paddingHorizontal:30,
+    height: 230,
     backgroundColor: 'white',
     borderRadius: 40,
     shadowColor: '#666666',

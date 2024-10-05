@@ -89,7 +89,7 @@ const SearchModeScreen = () => {
                     <View style={searchAndCleanModeStyles.wrapper}>
                         <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
                         <View style={searchAndCleanModeStyles.textFlex}>
-                            <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
+                            <TouchableOpacity onPress={() => navigation.navigate('SelectSigungu')}
                                               style={searchAndCleanModeStyles.textFlex}>
                                 <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
                                 <Icon
