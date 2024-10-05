@@ -43,12 +43,14 @@ const SelectSection = () => {
     const {sigunguCode, sigunguName} = route.params as RouteParams;
     const [coordinates, setCoordinates] = useState<Coordinate[][]>([]);
     const [selectedCoastIndex, setSelectedCoastIndex] = useState<number>(0);
+    const [seaData, setSeaData] = useState([]);
 
     useEffect(() => {
         if (sigunguCode && sigunguName) {
             console.log('sigunguCode: ', sigunguCode, 'sigunguName: ', sigunguName);
             setSigunguValue({label: sigunguName, value: sigunguCode});
         }
+        getSeaData().then();
     }, [sigunguCode]);
 
     useLayoutEffect(() => {
@@ -78,11 +80,6 @@ const SelectSection = () => {
 
     getSigunguInfoHandler();
 
-    const seaData = [
-        {location: '해운대', seaName: '해안선A', seaLength: '25000'},
-        {location: '광안리', seaName: '해안선B', seaLength: '30000'},
-        {location: '송정', seaName: '해안선C', seaLength: '30000'},
-    ];
 
     const {data: coastListResponseData} = useQuery(
         ['COASTLIST', sigunguValue],
@@ -101,12 +98,20 @@ const SelectSection = () => {
                 for (let i = 0; i < flatArray.length - 2; i += 2) {
                     tempArray.push({latitude: flatArray[i + 1], longitude: flatArray[i]});
                 }
-                if(tempArray.length > 2)
-                polyLineArray.push(tempArray);
+                if(tempArray.length > 2) {
+                    polyLineArray.push(tempArray);
+                }
             }
             setCoordinates(polyLineArray);
         }
     }, [coastListResponseData])
+
+    const getSeaData = async () => {
+        if(sigunguCode) {
+            const data = await (await fetch(`http://10.30.1.63:8080/api/v1/coast/listBySigungu/${sigunguCode}`)).json();
+            setSeaData(data);
+        }
+    }
 
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
