@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import CustomText from '../Common/CustomText';
 import {CustomButton} from '../Common/CustomButton';
@@ -9,9 +9,14 @@ export interface SeaItemProps {
   sigunguName: string;
   coastName: string;
   coastlineLen: string;
+  coastLonlat: {
+    coordinates: any;
+    lat: number; lon: number; }
+  setCenter: (coastLonlat: { lat: number; lon: number; }) => void;
 }
 
-const SeaItem = ({sigunguName, coastName, coastlineLen}: SeaItemProps) => {
+const SeaItem = ({sigunguName, coastName, coastlineLen, coastLonlat, setCenter}: SeaItemProps) => {
+
   return (
     <View style={styles.seatItemWrapper}>
       <View style={styles.textContainer}>
@@ -25,12 +30,18 @@ const SeaItem = ({sigunguName, coastName, coastlineLen}: SeaItemProps) => {
         </View>
         <View style={styles.textWrapper}>
           <CustomText style={styles.mainTitle}>해안길이</CustomText>
-          <CustomText style={styles.subTitle}>{coastlineLen}</CustomText>
+          <CustomText style={styles.subTitle}>{coastlineLen} m</CustomText>
         </View>
       </View>
 
       <CustomButton>
-        <CustomText style={{color: 'white'}}>선택하기</CustomText>
+        <CustomText
+            style={{color: 'white'}}
+            onPress={() => {
+              const [longitude, latitude] = coastLonlat.coordinates; // coordinates 배열에서 값을 추출
+              setCenter({ lat: latitude, lon: longitude }); // setCenter에 전달
+            }}
+        >선택하기</CustomText>
       </CustomButton>
     </View>
   );

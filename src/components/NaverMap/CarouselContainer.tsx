@@ -17,9 +17,10 @@ const defaultDataWith6Colors = [
 
 interface CarouselContainerProps {
   data: SeaItemProps[];
+  setCenter: (coastLonlat: { lat: number; lon: number; }) => void;
 }
 
-const CarouselContainer = ({data}: CarouselContainerProps) => {
+const CarouselContainer = ({data, setCenter}: CarouselContainerProps) => {
   const progress = useSharedValue<number>(0);
 
   return (
@@ -46,15 +47,15 @@ const CarouselContainer = ({data}: CarouselContainerProps) => {
           parallaxScrollingOffset: 50,
         }}
         onProgressChange={progress}
-        renderItem={item => {
-          return (
+        renderItem={item => (
             <SeaItem
                 sigunguName={item.item.sigunguName}
                 coastName={item.item.coastName}
                 coastlineLen={item.item.coastlineLen}
+                coastLonlat={item.item.coastLonlat}
+                setCenter={setCenter}
             />
-          );
-        }}
+        )}
       />
     </View>
   );

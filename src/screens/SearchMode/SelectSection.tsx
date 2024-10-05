@@ -1,21 +1,14 @@
-import CustomText from '@/components/Common/CustomText';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {RootStackParamList} from '../navigationTypes';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import HeaderLeftGoBack from '@/components/Common/HeaderLeftGoBack';
-import SigunguPolygonMap from '@components/NaverMap/SigunguPolygonMap.tsx';
 import {SafeAreaView, View} from 'react-native';
 import {globalStyles} from '@/styles/globalStyles';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {StyleSheet} from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
 import CarouselContainer from '@/components/NaverMap/CarouselContainer';
-import {getCoastListByCode, getSigunguInfo} from '@/apis/selectSection';
-import {ICoastDropData, ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
-import {useQuery} from 'react-query';
 import CoastPolyLineMap from "@components/NaverMap/CoastPolyLineMap.tsx";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -27,32 +20,33 @@ interface RouteParams {
 
 const SelectSection = () => {
     const navigation = useNavigation<RegisterScreenNavigationProp>();
-    const [sigunguList, setSigunguList] = useState<ISigunguDropData[]>();
-    const [sigunguValue, setSigunguValue] = useState<ISigunguDropData | null>(
-        null,
-    );
-    const [coastValue, setCoastValue] = useState<ICoastDropData | null>(
-        null,
-    );
+    // const [sigunguList, setSigunguList] = useState<ISigunguDropData[]>();
+    // const [sigunguValue, setSigunguValue] = useState<ISigunguDropData | null>(
+    //     null,
+    // );
+    // const [coastValue, setCoastValue] = useState<ICoastDropData | null>(
+    //     null,
+    // );
     type Coordinate = {
         latitude: number;
         longitude: number;
     };
-    const [isFocus, setIsFocus] = useState(false);
+    // const [isFocus, setIsFocus] = useState(false);
     const route = useRoute();
     const {sigunguCode, sigunguName} = route.params as RouteParams;
     const [coordinates, setCoordinates] = useState<Coordinate[][]>([]);
     const [selectedCoastIndex, setSelectedCoastIndex] = useState<number>(0);
     const [seaData, setSeaData] = useState([]);
+    const [center, setCenter] = useState();
 
-    useEffect(() => {
-        if (sigunguCode && sigunguName) {
-            console.log('sigunguCode: ', sigunguCode, 'sigunguName: ', sigunguName);
-            setSigunguValue({label: sigunguName, value: sigunguCode});
-        }
-        getSeaData().then();
-    }, [sigunguCode]);
-
+    // useEffect(() => {
+    //     if (sigunguCode && sigunguName) {
+    //         console.log('sigunguCode: ', sigunguCode, 'sigunguName: ', sigunguName);
+    //         setSigunguValue({label: sigunguName, value: sigunguCode});
+    //     }
+    //     getSeaData().then();
+    // }, [sigunguCode]);
+    //
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: '해안 선택',
@@ -79,17 +73,63 @@ const SelectSection = () => {
     // };
 
     // getSigunguInfoHandler();
+    // const getSigunguInfoHandler = async () => {
+    //     const updateList: ISigunguDropData[] = [];
+    //
+    //     const result = await getSigunguInfo();
+    //     // console.log('result: ', result);
+    //
+    //     if (result.length > 0) {
+    //         result.map(list => {
+    //             const data = {
+    //                 label: list.sigunguName,
+    //                 value: list.sigunguCode,
+    //             };
+    //             updateList.push(data);
+    //         });
+    //     }
+    //     setSigunguList(updateList);
+    // };
+    //
+    // getSigunguInfoHandler();
 
 
-    const {data: coastListResponseData} = useQuery(
-        ['COASTLIST', sigunguValue],
-        () => getCoastListByCode(sigunguValue?.value),
-    );
+    // const {data: coastListResponseData} = useQuery(
+    //     ['COASTLIST', sigunguValue],
+    //     () => getCoastListByCode(sigunguValue?.value),
+    // );
+    // useEffect(() => {
+    //     if (coastListResponseData && coastListResponseData.length > 0) {
+    //         let polyLineArray = [];
+    //
+    //         for (const coast of coastListResponseData) {
+    //             let tempArray = [];
+    //             // @ts-ignore
+    //             let geometry = JSON.parse(coast.coastGeom).coordinates;
+    //
+    //             let flatArray = geometry.flat(Infinity);
+    //             for (let i = 0; i < flatArray.length - 2; i += 2) {
+    //                 tempArray.push({latitude: flatArray[i + 1], longitude: flatArray[i]});
+    //             }
+    //             if(tempArray.length > 2) {
+    //                 polyLineArray.push(tempArray);
+    //             }
+    //         }
+    //         setCoordinates(polyLineArray);
+    //     }
+    // }, [coastListResponseData])
+
     useEffect(() => {
-        if (coastListResponseData && coastListResponseData.length > 0) {
+        getSeaData().then();
+    }, [])
+
+    const getSeaData = async () => {
+        if(sigunguCode) {
+            const data = await (await fetch(`https://www.didit.store/api/v1/coast/listBySigungu/${sigunguCode}`)).json();
+
             let polyLineArray = [];
 
-            for (const coast of coastListResponseData) {
+            for (const coast of data) {
                 let tempArray = [];
                 // @ts-ignore
                 let geometry = JSON.parse(coast.coastGeom).coordinates;
@@ -103,12 +143,6 @@ const SelectSection = () => {
                 }
             }
             setCoordinates(polyLineArray);
-        }
-    }, [coastListResponseData])
-
-    const getSeaData = async () => {
-        if(sigunguCode) {
-            const data = await (await fetch(`https://www.didit.store/api/v1/coast/listBySigungu/${sigunguCode}`)).json();
             setSeaData(data);
         }
     }
@@ -184,11 +218,15 @@ const SelectSection = () => {
                             line={coordinates}
                             selectedCoastIndex={selectedCoastIndex}
                             setSelectedCoastIndex={setSelectedCoastIndex}
+                            center={center}
                         />
                     )}
                     <View style={styles.appBackground}>
                         <View style={styles.carouselBox}>
-                            <CarouselContainer data={seaData}/>
+                            <CarouselContainer
+                                data={seaData}
+                                setCenter={setCenter}
+                            />
                         </View>
                     </View>
                 </View>

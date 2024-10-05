@@ -8,9 +8,14 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 // @ts-ignore
-const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSelectedCoastIndex} ) => {
+const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSelectedCoastIndex, center} ) => {
     const ref = useRef<NaverMapViewRef>(null);
     const [selectedPolyLineIndex, setSelectedPolyLineIndex] = useState(selectedCoastIndex);
+
+    useEffect(() => {
+        if(center != null)
+            moveMap(center.lat, center.lon);
+    }, [center])
 
     useEffect(() => {
         if(selectedPolyLineIndex != null)
@@ -28,6 +33,17 @@ const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSel
             ref.current.animateCameraTo({
                 latitude: e.latitude,
                 longitude: e.longitude,
+                zoom: 12,
+                duration: 1000,
+            });
+        }
+    };
+
+    const moveMap = (latitude: number, longitude: number) => {
+        if (ref.current) {
+            ref.current.animateCameraTo({
+                latitude,
+                longitude,
                 zoom: 12,
                 duration: 1000,
             });
