@@ -28,10 +28,6 @@ const CleanModeScreen = () => {
   const [searchImage, setSearchImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    console.log(searchImage);
-  }, [searchImage]);
-
   return (
     <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
       <ScrollView style={globalStyles.commonContainer}>
