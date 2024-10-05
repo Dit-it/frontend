@@ -12,7 +12,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
-    <RootStack.Navigator initialRouteName="SelectSigungu">
+    <RootStack.Navigator initialRouteName="Login">
       <RootStack.Screen
         name="Login"
         component={LoginScreen}
@@ -36,10 +36,3 @@ const Navigator = () => {
 };
 
 export default Navigator;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     // flex: 1,
-//     backgroundColor: '#ffffff', // 필요한 경우 배경색 설정
-//   },
-// });

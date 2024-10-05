@@ -1,7 +1,7 @@
 import axios, {AxiosRequestConfig} from 'axios';
 
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: `${process.env.REACT_APP_API_URL}`,
+  baseURL: `https://www.didit.store`,
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
   },
