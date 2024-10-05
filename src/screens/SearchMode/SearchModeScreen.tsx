@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Image, SafeAreaView, ScrollView, StyleSheet, View,} from 'react-native';
+import {Image, SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, View,} from 'react-native';
 import {RootStackParamList} from '../navigationTypes';
 import CustomText from '@/components/Common/CustomText';
 import HeaderLeftGoBack from '@/components/Common/HeaderLeftGoBack';
@@ -39,12 +39,15 @@ const SearchModeScreen = () => {
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
-                        <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
-                        <Icon
-                            size={18}
-                            name="chevron-forward-outline"
-                            color={color.gray400}
-                        />
+                        <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
+                                style={searchAndCleanModeStyles.textFlex}>
+                            <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
+                            <Icon
+                                size={18}
+                                name="chevron-forward-outline"
+                                color={color.gray400}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
@@ -55,7 +58,8 @@ const SearchModeScreen = () => {
                                                                                source={{uri: searchImage.uri}}/></View>}
                     <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
                                   callBack={() => setModalVisible(true)}>
-                        <CustomText style={searchAndCleanModeStyles.imageButtonText}>{searchImage ? '사진수정' : '사진등록'}</CustomText>
+                        <CustomText
+                            style={searchAndCleanModeStyles.imageButtonText}>{searchImage ? '사진수정' : '사진등록'}</CustomText>
                         <Icon size={20} name="add-circle" color={color.gray300}/>
                         <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
                                           setSearchImage={setSearchImage}></PhotoPickerModal>
