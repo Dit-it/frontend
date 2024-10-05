@@ -1,11 +1,12 @@
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navigator from './screens/Navigator';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import SplashScreen from 'react-native-splash-screen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Alert, Platform, StatusBar} from 'react-native';
-import {check, PERMISSIONS, request, RESULTS} from 'react-native-permissions';
+import GetPermissionModal from './components/GetPermission/GetPermissionModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const queryClient = new QueryClient();
 
@@ -17,47 +18,45 @@ const navTheme = {
   },
 };
 
-// 위치 권한 요청
-const requestLocationPermission = async () => {
-  const permission =
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
-      : PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION;
-
-  try {
-    const result = await check(permission);
-
-    if (result === RESULTS.GRANTED) {
-      console.log('위치 접근 권한이 이미 허용되었습니다.');
-    } else {
-      const requestResult = await request(permission);
-      console.log('requestResult: ', requestResult);
-
-      if (requestResult === RESULTS.GRANTED) {
-        console.log('위치 접근 권한이 허용되었습니다.');
-      } else {
-        Alert.alert(
-          '권한 필요',
-          '이 앱은 지도를 표시하고 사용자 위치를 기반으로 서비스를 제공하기 위해 위치 정보에 접근해야 합니다.',
-          [{text: '확인'}],
-        );
-      }
-    }
-  } catch (error) {
-    console.warn(error);
-  }
-};
-
 const App = () => {
+  const [getPermission, setPermission] = useState(false);
+
+  // AsyncStorage에서 'permissionsRequested' 플래그 가져오기
   useEffect(() => {
-    requestLocationPermission();
+    const checkPermissionsRequested = async () => {
+      try {
+        const permissionFlag = await AsyncStorage.getItem(
+          'permissionsRequested',
+        );
+        if (!permissionFlag) {
+          // 권한 요청을 한 번도 하지 않은 경우 모달을 띄우도록 설정
+          setPermission(true);
+        }
+      } catch (error) {
+        console.warn('권한 플래그 확인 중 오류:', error);
+      }
+    };
+
+    checkPermissionsRequested();
   }, []);
+
+  const hidePermission = async () => {
+    setPermission(false);
+    // 권한 모달을 숨긴 후 AsyncStorage에 'permissionsRequested' 플래그 저장
+    try {
+      await AsyncStorage.setItem('permissionsRequested', 'true');
+    } catch (error) {
+      console.warn('플래그 저장 중 오류:', error);
+    }
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer onReady={() => SplashScreen.hide()} theme={navTheme}>
         <StatusBar backgroundColor={'transparent'} translucent />
         <GestureHandlerRootView style={{flex: 1}}>
           <Navigator />
+          {getPermission && <GetPermissionModal onHide={hidePermission} />}
         </GestureHandlerRootView>
       </NavigationContainer>
     </QueryClientProvider>

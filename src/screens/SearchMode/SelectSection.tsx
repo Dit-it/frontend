@@ -13,6 +13,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
 import CarouselContainer from '@/components/NaverMap/Carousel';
+import GetPermissionModal from '@/components/GetPermission/GetPermissionModal';
 // import Carousel from '@/components/NaverMap/Carousel';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;

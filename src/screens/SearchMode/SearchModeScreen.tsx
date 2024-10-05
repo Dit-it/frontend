@@ -21,7 +21,9 @@ import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
-import PhotoPickerModal from "@components/Common/PhotoPickerModal.tsx";
+import PhotoPickerModal from '@components/Common/PhotoPickerModal.tsx';
+import {showCameraModalHandler} from '@/services/cameraPermission';
+import {openSettings} from 'react-native-permissions';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -39,10 +41,18 @@ const SearchModeScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    // @ts-ignore
     console.log(searchImage);
-  // @ts-ignore
   }, [searchImage]);
+
+  const showModalHandler = async () => {
+    const result = await showCameraModalHandler();
+    console.log('result: ', result);
+    if (result) {
+      setModalVisible(true);
+    } else {
+      console.error('권한 요청 실패');
+    }
+  };
 
   return (
     <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -61,12 +71,15 @@ const SearchModeScreen = () => {
 
         <View style={styles.wrapper}>
           <CustomText style={styles.title}>오염정도 평가</CustomText>
-          <CustomButton style={[styles.gray, styles.flexRow]}
-                        callBack={() => setModalVisible(true)}>
+          <CustomButton
+            style={[styles.gray, styles.flexRow]}
+            callBack={showModalHandler}>
             <CustomText style={styles.imageButtonText}>사진등록</CustomText>
             <Icon size={20} name="add-circle" color={color.gray300} />
-            <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
-                              setSearchImage={setSearchImage}></PhotoPickerModal>
+            <PhotoPickerModal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              setSearchImage={setSearchImage}></PhotoPickerModal>
           </CustomButton>
         </View>
 
