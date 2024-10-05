@@ -26,7 +26,8 @@ export const LoginScreen = () => {
 
   const loginSubmitHandler = () => {
     // navigation.navigate('CleanupMode');
-    navigation.navigate('SearchMode');
+    navigation.navigate('SelectSigungu');
+    // navigation.navigate('SearchMode');
   };
 
   return (

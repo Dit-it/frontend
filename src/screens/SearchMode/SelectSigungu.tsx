@@ -36,7 +36,7 @@ const SelectSigungu = () => {
         try {
 
         console.log('getSigunguList');
-        const data = await (await fetch('http://10.30.1.63:8080/api/v1/sigunguInfo')).json();
+        const data = await (await fetch('https://www.didit.store/api/v1/sigunguInfo')).json();
         setSigunguList(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -53,6 +53,7 @@ const SelectSigungu = () => {
 
             for (const sigungu of sigunguList) {
                 let tempArray = [];
+                // @ts-ignore
                 let geometry = JSON.parse(sigungu.sigunguPolygon).coordinates;
                 let flatArray = geometry.flat(Infinity);
                 for (let i = 0; i < flatArray.length - 2; i+=2) {
@@ -61,6 +62,7 @@ const SelectSigungu = () => {
                 }
                 polygonArray.push(tempArray);
             }
+            console.log(polygonArray);
             setCoordinates(polygonArray);
         }
     }, [sigunguList]);
@@ -78,7 +80,7 @@ const SelectSigungu = () => {
 
                     {/* sigunguList가 존재하고 배열일 때 map 함수 사용 */}
                     {sigunguList.length > 0 ? (
-                        sigunguList.map((item, index) => (
+                        sigunguList.map((item: {sigunguName: string}, index) => (
                             <CustomText key={index}>
                                 {item.sigunguName}
                             </CustomText>
