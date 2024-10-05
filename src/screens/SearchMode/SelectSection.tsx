@@ -1,5 +1,5 @@
 import CustomText from '@/components/Common/CustomText';
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {RootStackParamList} from '../navigationTypes';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
@@ -12,26 +12,23 @@ import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
-import CarouselContainer from '@/components/NaverMap/Carousel';
+import CarouselContainer from '@/components/NaverMap/CarouselContainer';
 import GetPermissionModal from '@/components/GetPermission/GetPermissionModal';
+import {getCoastListByCode, getSigunguInfo} from '@/apis/selectSection';
 // import Carousel from '@/components/NaverMap/Carousel';
+import {log} from '../../../node_modules/react-native-reanimated-carousel/src/utils/log';
+import {ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
+import {useQuery} from 'react-query';
+import NaverMapPolyLine from '@/components/NaverMap/NaverMapPolyLine';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const SelectSection = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
-  const data = [
-    {label: 'Item 1', value: '1'},
-    {label: 'Item 2', value: '2'},
-    {label: 'Item 3', value: '3'},
-    {label: 'Item 4', value: '4'},
-    {label: 'Item 5', value: '5'},
-    {label: 'Item 6', value: '6'},
-    {label: 'Item 7', value: '7'},
-    {label: 'Item 8', value: '8'},
-  ];
-
-  const [value, setValue] = useState<string | null>(null);
+  const [sigunguList, setSigunguList] = useState<ISigunguDropData[]>();
+  const [sigunguValue, setSigunguValue] = useState<ISigunguDropData | null>(
+    null,
+  );
   const [isFocus, setIsFocus] = useState(false);
 
   useLayoutEffect(() => {
@@ -41,11 +38,39 @@ const SelectSection = () => {
     });
   }, [navigation]);
 
+  const getSigunguInfoHandler = async () => {
+    const updateList: ISigunguDropData[] = [];
+
+    const result = await getSigunguInfo();
+    // console.log('result: ', result);
+
+    if (result.length > 0) {
+      result.map(list => {
+        const data = {
+          label: list.sigunguName,
+          value: list.sigunguCode,
+        };
+        updateList.push(data);
+      });
+    }
+    setSigunguList(updateList);
+  };
+
+  getSigunguInfoHandler();
+
   const seaData = [
     {location: '해운대', seaName: '해안선A', seaLength: '25000'},
     {location: '광안리', seaName: '해안선B', seaLength: '30000'},
     {location: '송정', seaName: '해안선C', seaLength: '30000'},
   ];
+
+  const {data: coastListResponseData} = useQuery(
+    ['COASTLIST', sigunguValue],
+    () => getCoastListByCode(sigunguValue?.value),
+  );
+  useEffect(()=>{
+    console.log("coastListResponseData: ",coastListResponseData);
+  },[coastListResponseData])
 
   return (
     <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -66,18 +91,20 @@ const SelectSection = () => {
                 inputSearchStyle={styles.inputSearchStyle}
                 itemTextStyle={styles.itemContainerStyle}
                 iconStyle={styles.iconStyle}
-                data={data}
-                // search
+                data={sigunguList ? sigunguList : []}
                 maxHeight={200}
                 labelField="label"
                 valueField="value"
-                placeholder={!isFocus ? 'Select item' : '...'}
+                placeholder={!isFocus ? '구 선택' : '...'}
                 searchPlaceholder="Search..."
-                value={value}
+                value={sigunguValue?.value}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
-                  setValue(item.value);
+                  setSigunguValue({
+                    label: item.label,
+                    value: item.value,
+                  });
                   setIsFocus(false);
                 }}
               />
@@ -85,51 +112,16 @@ const SelectSection = () => {
 
             <View style={styles.dropdownContainer}>
               {/* {renderLabel()} */}
-              <Dropdown
-                style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                itemTextStyle={styles.itemContainerStyle}
-                iconStyle={styles.iconStyle}
-                data={data}
-                // search
-                maxHeight={200}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? 'Select item' : '...'}
-                searchPlaceholder="Search"
-                value={value}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setValue(item.value);
-                  setIsFocus(false);
-                }}
-              />
             </View>
           </View>
         </View>
-        {/* <NaverMap /> */}
+        {/* <NaverMapPolyLine /> */}
 
-        {/* <View style={styles.appBackground}>
+        <View style={styles.appBackground}>
           <View style={styles.carouselBox}>
-            <Carousel />
+            <CarouselContainer data={seaData} />
           </View>
-        </View> */}
-        {/* <View>
-          <Carousel
-            images={[
-              'https://www.didit.store/img/ggu.png',
-              'https://img.hankyung.com/photo/202309/AKR20230901035200005_01_i_P4.jpg',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSayzFV4TvY_t5ynst6FMKEchrntX5faQ6xVg&s',
-            ]}
-            gap={10}
-            offset={36}
-            pageWidth={screenWidth - (10 + 36) * 2}
-          />
-        </View> */}
-        {/* <CarouselContainer /> */}
+        </View>
       </View>
     </SafeAreaView>
   );
