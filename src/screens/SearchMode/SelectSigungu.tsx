@@ -68,6 +68,7 @@ const SelectSigungu = () => {
         }
     }, [sigunguList]);
 
+    // @ts-ignore
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
             <View style={globalStyles.commonContainer}>
@@ -101,7 +102,7 @@ const SelectSigungu = () => {
                     </View>
                 </View>
                 <View style={styles.infoText}>
-                    <CustomButton onPress={() => navigation.navigate('SelectSection')}>
+                    <CustomButton callBack={() => navigation.navigate('SelectSection')}>
                         <CustomText style={styles.buttonText}>다음</CustomText>
                     </CustomButton>
                 </View>
