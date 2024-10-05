@@ -4,4 +4,5 @@ export type RootStackParamList = {
   Register: undefined;
   SearchMode: undefined;
   SelectSection: undefined;
+  CleanupMode: undefined;
 };

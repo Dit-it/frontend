@@ -9,7 +9,7 @@ const PhotoPickerModal = ({
                               // @ts-ignore
                               modalVisible, setModalVisible,
                               // @ts-ignore
-                              setSearchImage
+                              setPicture
                           }) => {
 
     const requestCameraPermission = async () => {
@@ -53,7 +53,7 @@ const PhotoPickerModal = ({
                 Alert.alert("오류 발생", result.errorMessage);
             } else {
                 // @ts-ignore
-                setSearchImage(result.assets[0]);
+                setPicture(result.assets[0]);
                 setModalVisible(false);
             }
         } catch (error) {
@@ -76,7 +76,7 @@ const PhotoPickerModal = ({
                 Alert.alert("오류 발생", result.errorMessage);
             } else {
                 // @ts-ignore
-                setSearchImage(result.assets[0]);
+                setPicture(result.assets[0]);
                 setModalVisible(false);
             }
         } catch (error) {

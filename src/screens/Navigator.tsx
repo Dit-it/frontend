@@ -6,6 +6,7 @@ import {RootStackParamList} from './navigationTypes';
 import SearchModeScreen from './SearchMode/SearchModeScreen';
 import {LoginScreen} from './Login/LoginScreen';
 import SelectSection from './SearchMode/SelectSection';
+import CleanModeScreen from "@screens/CleanMode/CleanModeScreen.tsx";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -29,6 +30,7 @@ const Navigator = () => {
         component={Splash}
         options={{headerShown: false}}
       />
+      <RootStack.Screen name="CleanupMode" component={CleanModeScreen} />
     </RootStack.Navigator>
   );
 };

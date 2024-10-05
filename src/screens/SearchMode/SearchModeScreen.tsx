@@ -61,16 +61,15 @@ const SearchModeScreen = () => {
 
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>오염정도 평가</CustomText>
-
-                    {observedPicture && <View style={styles.containerStyle}><Image style={styles.searchImageStyle}
-                                                                               source={{uri: observedPicture.uri}}/></View>}
+                    {observedPicture && <View style={styles.containerStyle}><Image style={styles.observedImageStyle}
+                                                                                   source={{uri: observedPicture.uri}}/></View>}
                     <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
                                   callBack={showModalHandler}>
                         <CustomText
                             style={searchAndCleanModeStyles.imageButtonText}>{observedPicture ? '사진수정' : '사진등록'}</CustomText>
                         <Icon size={20} name="add-circle" color={color.gray300}/>
                         <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
-                                          setSearchImage={setObservedPicture}></PhotoPickerModal>
+                                          setPicture={setObservedPicture}></PhotoPickerModal>
                     </CustomButton>
                 </View>
 
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    searchImageStyle: {
+    observedImageStyle: {
         width: 200,
         height: 200
     },
