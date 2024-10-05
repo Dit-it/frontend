@@ -38,7 +38,7 @@ const SelectSigungu = () => {
         try {
 
         console.log('getSigunguList');
-        const data = await (await fetch('http://10.30.1.63:8080/api/v1/sigunguInfo')).json();
+        const data = await (await fetch('https://www.didit.store/api/v1/sigunguInfo')).json();
         setSigunguList(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -55,6 +55,7 @@ const SelectSigungu = () => {
 
             for (const sigungu of sigunguList) {
                 let tempArray = [];
+                // @ts-ignore
                 let geometry = JSON.parse(sigungu.sigunguPolygon).coordinates;
                 let flatArray = geometry.flat(Infinity);
                 for (let i = 0; i < flatArray.length - 2; i+=2) {

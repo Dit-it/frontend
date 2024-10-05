@@ -1,4 +1,4 @@
-import {NaverMapPolygonOverlay, NaverMapView, Region} from '@mj-studio/react-native-naver-map';
+import {Coord, NaverMapPolygonOverlay, NaverMapView, Region} from '@mj-studio/react-native-naver-map';
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
