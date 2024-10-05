@@ -13,7 +13,10 @@ const SelectedCleanupDataView = ({selectedCleanupData, navigation} : ComponentPr
         // 선택된 수거물 데이터 수거
         let flag : boolean = true;
         for (const cleanupData of selectedCleanupData) {
-            fetch(`https://www.didit.store/api/v1/cleanup/collect/${cleanupData.cleanupDataId}`)
+            fetch(`https://www.didit.store/api/v1/cleanup/collect/${cleanupData.cleanupDataId}`,
+                {
+                    method: 'PUT'
+                })
                 .then(res => res.json())
                 .then(data => {
                     flag = flag && data;
