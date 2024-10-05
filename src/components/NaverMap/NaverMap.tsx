@@ -2,13 +2,12 @@ import {NaverMapPolygonOverlay, NaverMapView, Region} from '@mj-studio/react-nat
 import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
+import {log} from "react-native-reanimated-carousel/lib/typescript/utils/log";
 
 // @ts-ignore
 const NaverMap = ( {polygon, mapType = 'fullMap'} ) => {
 
-    console.log(polygon[0]);
-
-  return <NaverMapView
+    return <NaverMapView
       style={[mapType === 'minMap' ? styles.minMap : styles.fullMap]}
       initialCamera={{
         latitude: 35.1796,
@@ -16,13 +15,13 @@ const NaverMap = ( {polygon, mapType = 'fullMap'} ) => {
         zoom: 10
       }}
   >
-      {polygon.map((item, index) => (
+      {polygon.map((p, polygonIndex) => (
           <NaverMapPolygonOverlay
-              key={index}
+              key={polygonIndex}
               outlineWidth={1}
               outlineColor={'#104DD0'}
               color={'rgba(16, 77, 208, 0.15)'}
-              coords={item}
+              coords={p}
               zIndex={9}
           />
       ))}

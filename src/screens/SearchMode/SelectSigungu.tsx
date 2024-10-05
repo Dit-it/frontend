@@ -52,10 +52,12 @@ const SelectSigungu = () => {
             let polygonArray = [];
 
             for (const sigungu of sigunguList) {
-                let geometry = JSON.parse(sigungu.sigunguPolygon).coordinates[0][0];
                 let tempArray = [];
-                for (const lonlat of geometry) {
-                    tempArray.push({latitude: lonlat[1], longitude: lonlat[0]});
+                let geometry = JSON.parse(sigungu.sigunguPolygon).coordinates;
+                let flatArray = geometry.flat(Infinity);
+                for (let i = 0; i < flatArray.length - 2; i+=2) {
+                    tempArray.push({latitude: flatArray[i+1], longitude: flatArray[i]});
+
                 }
                 polygonArray.push(tempArray);
             }
@@ -79,7 +81,6 @@ const SelectSigungu = () => {
                         sigunguList.map((item, index) => (
                             <CustomText key={index}>
                                 {item.sigunguName}
-                                {item.sigunguPolygon.substring(0, 20)}
                             </CustomText>
                         ))
                     ) : (
