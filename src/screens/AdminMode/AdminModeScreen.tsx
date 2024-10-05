@@ -11,6 +11,7 @@ import {LineChart} from 'react-native-chart-kit';
 import {useQuery} from 'react-query';
 import {filter} from '../../../node_modules/domutils/lib/esm/querying';
 import {IMajorTypeOfLitterData} from '@/@types/adminChartTypes';
+import { Calendar } from 'react-native-calendars';
 
 const AdminModeScreen = () => {
   const [sigunguList, setSigunguList] = useState<ISigunguDropData[]>();
@@ -64,6 +65,8 @@ const AdminModeScreen = () => {
         />
         <AdminLineChart />
       </View>
+
+      <Calendar/>
     </SafeAreaView>
   );
 };
