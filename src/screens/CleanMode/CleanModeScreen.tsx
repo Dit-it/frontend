@@ -49,8 +49,10 @@ const CleanModeScreen = () => {
                         callBack={() => setModalVisible(true)}>
             <CustomText style={searchAndCleanModeStyles.imageButtonText}>사진등록</CustomText>
             <Icon size={20} name="add-circle" color={color.gray300} />
-            <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
-                              setSearchImage={setSearchImage}></PhotoPickerModal>
+            <PhotoPickerModal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              setSearchImage={setSearchImage}></PhotoPickerModal>
           </CustomButton>
         </View>
 

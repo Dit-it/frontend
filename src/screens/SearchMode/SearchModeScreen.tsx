@@ -13,6 +13,7 @@ import color from '@/constant/color';
 import PhotoPickerModal from "@components/Common/PhotoPickerModal.tsx";
 import {Asset} from "react-native-image-picker";
 import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
+import { showCameraModalHandler } from '@/services/cameraPermission';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -28,6 +29,23 @@ const SearchModeScreen = () => {
 
     const [searchImage, setSearchImage] = useState<Asset | null>(null);
     const [modalVisible, setModalVisible] = useState<Boolean>(false);
+
+  useEffect(() => {
+    console.log(searchImage);
+  }, [searchImage]);
+
+  const showModalHandler = async () => {
+    const result = await showCameraModalHandler();
+    console.log('result: ', result);
+    if (result) {
+      setModalVisible(true);
+    } else {
+      console.error('권한 요청 실패');
+    }
+  };
+    useEffect(() => {
+        console.log(searchImage);
+    }, [searchImage]);
 
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -53,9 +71,8 @@ const SearchModeScreen = () => {
                     {searchImage && <View style={styles.containerStyle}><Image style={styles.searchImageStyle}
                                                                                source={{uri: searchImage.uri}}/></View>}
                     <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
-                                  callBack={() => setModalVisible(true)}>
-                        <CustomText
-                            style={searchAndCleanModeStyles.imageButtonText}>{searchImage ? '사진수정' : '사진등록'}</CustomText>
+                                  callBack={showModalHandler}>
+                        <CustomText style={searchAndCleanModeStyles.imageButtonText}>{searchImage ? '사진수정' : '사진등록'}</CustomText>
                         <Icon size={20} name="add-circle" color={color.gray300}/>
                         <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
                                           setSearchImage={setSearchImage}></PhotoPickerModal>
