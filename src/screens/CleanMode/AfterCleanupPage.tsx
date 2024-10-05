@@ -13,9 +13,15 @@ const AfterCleanupPage = ({
                               setCollectionPicture,
                               collectionLocationMemo,
                               setCollectionLocationMemo,
-                              location,
-                              cleanupDt
+                              location, count50Liter,
+                              cleanupDt, setCount50Liter
                           }: React.ComponentProps<any>) => {
+    // 숫자만 입력하게 필터링
+    const handleChangeText = (text: string) => {
+        // 숫자만 입력 가능하게 필터
+        const numericText = text.replace(/[^0-9]/g, '');
+        setCount50Liter(+numericText);
+    };
     return (
         <>
             <ScrollView style={globalStyles.commonContainer}>
@@ -30,6 +36,14 @@ const AfterCleanupPage = ({
                             </CustomText>
                         </View>
                     </View>
+                </View>
+                <View style={searchAndCleanModeStyles.wrapper}>
+                    <CustomText style={searchAndCleanModeStyles.title}>쓰레기 포대 수(50L)</CustomText>
+                    <TextInput
+                        style={searchAndCleanModeStyles.input}
+                        value={count50Liter?.toString()}
+                        onChangeText={handleChangeText}
+                    />
                 </View>
                 <PictureBox picture={collectionPicture} setPicture={setCollectionPicture}
                             title={'집하장소 사진'}/>

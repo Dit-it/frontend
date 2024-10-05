@@ -27,6 +27,7 @@ const CleanModeScreen = () => {
         latitude: number;
         longitude: number;
     } | null>(null);
+    const [count50Liter, setCount50Liter] = useState<number | null>(null);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -86,7 +87,7 @@ const CleanModeScreen = () => {
                                     setCollectionPicture={setCollectionPicture}
                                     collectionLocationMemo={collectionLocationMemo}
                                     setCollectionLocationMemo={setCollectionLocationMemo}
-                                    location={location}
+                                    location={location} count50Liter={count50Liter} setCount50Liter={setCount50Liter}
                                     cleanupDt={cleanupDt}/>}
         </SafeAreaView>
     );
