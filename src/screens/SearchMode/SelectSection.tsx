@@ -12,7 +12,7 @@ import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
-import CarouselContainer from '@/components/NaverMap/Carousel';
+import CarouselContainer from '@/components/NaverMap/CarouselContainer';
 import GetPermissionModal from '@/components/GetPermission/GetPermissionModal';
 // import Carousel from '@/components/NaverMap/Carousel';
 
@@ -110,13 +110,13 @@ const SelectSection = () => {
             </View>
           </View>
         </View>
-        {/* <NaverMap /> */}
+        <NaverMap />
 
-        {/* <View style={styles.appBackground}>
+        <View style={styles.appBackground}>
           <View style={styles.carouselBox}>
-            <Carousel />
+            <CarouselContainer data={seaData} />
           </View>
-        </View> */}
+        </View>
         {/* <View>
           <Carousel
             images={[
