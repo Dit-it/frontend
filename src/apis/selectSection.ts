@@ -16,3 +16,10 @@ export const getCoastListByCode = async (sigunguCode: string | undefined) => {
     console.log('sigunguCode 없음');
   }
 };
+
+export const getCleanupDataGroupBySigungu = async () => {
+  const response = await instance.get(
+    `/api/v1/cleanup/cleanupDataGroupBySigungu/2023-09-01/2024-10-03`,
+  );
+  return response.data;
+};
