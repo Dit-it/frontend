@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Register: undefined;
   SearchMode: undefined;
   SelectSigungu: undefined;
-  SelectSection: undefined;
+  SelectSection: { sigunguValue: string };
   CleanupMode: undefined;
   AdminMode: undefined;
 };

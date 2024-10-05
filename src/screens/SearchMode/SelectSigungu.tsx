@@ -99,7 +99,9 @@ const SelectSigungu = () => {
                     </View>
                 </View>
                 <View style={styles.infoText}>
-                    <CustomButton onPress={() => navigation.navigate('SelectSection')}>
+                    <CustomButton callBack={() => navigation.navigate('SelectSection', {
+                        sigunguValue:  sigunguList[selectedRegionIndex].sigunguCode
+                    })}>
                         <CustomText style={styles.buttonText}>다음</CustomText>
                     </CustomButton>
                 </View>

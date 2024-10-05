@@ -8,11 +8,10 @@ const NaverMap = ( {polygon, regionList,
                        mapType = 'fullMap', selectedRegionIndex, setSelectedRegionIndex} ) => {
 
     const [selectedPolygonIndex, setSelectedPolygonIndex] = useState(selectedRegionIndex);
-    const [selectedSigunguCode, setSelectedSigunguCode] = useState(selectedRegionIndex);
 
     useEffect(() => {
         if(selectedPolygonIndex != null)
-            setSelectedSigunguCode(regionList[selectedPolygonIndex].sigunguCode);
+        setSelectedRegionIndex(selectedPolygonIndex);
     }, [selectedPolygonIndex])
 
     useEffect(() => {

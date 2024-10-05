@@ -15,11 +15,8 @@ import color from '@/constant/color';
 import CarouselContainer from '@/components/NaverMap/CarouselContainer';
 import GetPermissionModal from '@/components/GetPermission/GetPermissionModal';
 import {getCoastListByCode, getSigunguInfo} from '@/apis/selectSection';
-// import Carousel from '@/components/NaverMap/Carousel';
-import {log} from '../../../node_modules/react-native-reanimated-carousel/src/utils/log';
 import {ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
 import {useQuery} from 'react-query';
-import NaverMapPolyLine from '@/components/NaverMap/NaverMapPolyLine';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
