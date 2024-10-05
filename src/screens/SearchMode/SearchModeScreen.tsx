@@ -67,7 +67,7 @@ const SearchModeScreen = () => {
                 </View>
 
                 <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>오염정도 평가</CustomText>
+                    <CustomText style={searchAndCleanModeStyles.title}>조사 사진</CustomText>
                     {observedPicture && <View style={styles.containerStyle}><Image style={styles.observedImageStyle}
                                                                                    source={{uri: observedPicture.uri}}/></View>}
                     <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
@@ -81,7 +81,7 @@ const SearchModeScreen = () => {
                 </View>
 
                 <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>일시</CustomText>
+                    <CustomText style={searchAndCleanModeStyles.title}>조사 일시</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
                         <View style={searchAndCleanModeStyles.inputPosition}>
                             <CustomText style={searchAndCleanModeStyles.input}>
