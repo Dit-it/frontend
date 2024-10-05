@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, Modal, PermissionsAndroid, Platform, StyleSheet, TouchableOpacity, View} from "react-native";
-import {ImageLibraryOptions, launchCamera, launchImageLibrary} from "react-native-image-picker";
+import {ImageLibraryOptions, ImagePickerResponse, launchCamera, launchImageLibrary} from "react-native-image-picker";
 import CustomText from "@components/Common/CustomText.tsx";
 
 
@@ -42,8 +42,7 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
                 mediaType: 'photo',
                 saveToPhotos: true,
             };
-            // @ts-ignore
-            const [result] = await Promise.all([launchCamera(options)]);
+            const [result] = await Promise.all([launchCamera(options as ImageLibraryOptions)]);
             if (result.didCancel) {
                 console.log('User cancelled image picker');
             } else if (result.errorCode) {
@@ -66,7 +65,7 @@ const PhotoPickerModal = ({modalVisible, setModalVisible,
                 mediaType: 'photo',
             };
 
-            const result = await launchImageLibrary(options as ImageLibraryOptions);
+            const result: ImagePickerResponse = await launchImageLibrary(options as ImageLibraryOptions);
             if (result.didCancel) {
                 console.log('User cancelled image picker');
             } else if (result.errorCode) {
