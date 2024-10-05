@@ -14,112 +14,135 @@ import PhotoPickerModal from "@components/Common/PhotoPickerModal.tsx";
 import {Asset} from "react-native-image-picker";
 import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
 import {showCameraModalHandler} from '@/services/cameraPermission';
+import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const SearchModeScreen = () => {
-    const navigation = useNavigation<RegisterScreenNavigationProp>();
+        const navigation = useNavigation<RegisterScreenNavigationProp>();
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: '조사모드',
-            headerLeft: () => <HeaderLeftGoBack navigation={navigation}/>,
-        });
-    }, [navigation]);
+        useLayoutEffect(() => {
+            navigation.setOptions({
+                headerTitle: '조사모드',
+                headerLeft: () => <HeaderLeftGoBack navigation={navigation}/>,
+            });
+        }, [navigation]);
 
-    const [observedPicture, setObservedPicture] = useState<Asset | null>(null);
-    const [modalVisible, setModalVisible] = useState<Boolean>(false);
-    const [litterTypeCode, setLitterTypeCode] = useState<string | null>(null);
-    const [observedDt, setObservedDt] = useState<Date | null>(null);
-    const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
+        const [observedPicture, setObservedPicture] = useState<Asset | null>(null);
+        const [modalVisible, setModalVisible] = useState<Boolean>(false);
+        const [litterTypeCode, setLitterTypeCode] = useState<string | null>(null);
+        const [observedDt, setObservedDt] = useState<Date | null>(null);
+        const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
 
-    const showModalHandler = async () => {
-        const result = await showCameraModalHandler();
-        console.log('result: ', result);
-        if (result) {
-            setModalVisible(true);
-        } else {
-            console.error('권한 요청 실패');
+        const showModalHandler = async () => {
+            const result = await showCameraModalHandler();
+            console.log('result: ', result);
+            if (result) {
+                setModalVisible(true);
+            } else {
+                console.error('권한 요청 실패');
+            }
+        };
+
+        useEffect(() => {
+            if (observedPicture) {
+                setObservedDt(new Date());
+            }
+        }, [observedPicture]);
+
+        // 숫자만 입력하게 필터링
+        const handleChangeText = (text: string) => {
+            // 숫자만 입력 가능하게 필터
+            const numericText = text.replace(/[^0-9]/g, '');
+            setEstimationLiter(+numericText);
+        };
+
+        // register observe data
+        const registerObserveData = () => {
+            // formData 생성
+            const formData = new FormData();
+            formData.append('observedPicture', {
+                uri: observedPicture?.uri,
+                type: observedPicture?.type || 'image/jpeg',
+                name: observedPicture?.fileName || 'observedPicture.jpg'
+            });
+            formData.append('coastCode', 34);
+            formData.append('litterTypeCode', litterTypeCode);
+            formData.append('observedDt', `${observedDt?.getFullYear()}${
+                // @ts-ignore
+                observedDt?.getMonth() + 1 > 9 ? observedDt?.getMonth() + 1 : '0' + (observedDt?.getMonth() + 1)}${
+                // @ts-ignore
+                observedDt?.getDate() > 9 ? observedDt?.getDate() : '0' + observedDt?.getDate()}${
+                observedDt?.getHours()}${observedDt?.getMinutes()}`);
+            formData.append('estimationLiter', estimationLiter);
+
+            postMultipartFormData(formData, 'api/v1/observe/register').then();
         }
-    };
-
-    useEffect(() => {
-        if (observedPicture) {
-            setObservedDt(new Date());
-        }
-    }, [observedPicture]);
-
-    // 숫자만 입력하게 필터링
-    const handleChangeText = (text: string) => {
-        // 숫자만 입력 가능하게 필터
-        const numericText = text.replace(/[^0-9]/g, '');
-        setEstimationLiter(+numericText);
-    };
-
-    return (
-        <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
-            <ScrollView style={globalStyles.commonContainer}>
-                <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
-                    <View style={searchAndCleanModeStyles.textFlex}>
-                        <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
-                                          style={searchAndCleanModeStyles.textFlex}>
-                            <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
-                            <Icon
-                                size={18}
-                                name="chevron-forward-outline"
-                                color={color.gray400}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>조사 사진</CustomText>
-                    {observedPicture && <View style={styles.containerStyle}><Image style={styles.observedImageStyle}
-                                                                                   source={{uri: observedPicture.uri}}/></View>}
-                    <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
-                                  callBack={showModalHandler}>
-                        <CustomText
-                            style={searchAndCleanModeStyles.imageButtonText}>{observedPicture ? '사진수정' : '사진등록'}</CustomText>
-                        <Icon size={20} name="add-circle" color={color.gray300}/>
-                        <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
-                                          setPicture={setObservedPicture}></PhotoPickerModal>
-                    </CustomButton>
-                </View>
-
-                <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>조사 일시</CustomText>
-                    <View style={searchAndCleanModeStyles.textFlex}>
-                        <View style={searchAndCleanModeStyles.input}>
-                            <CustomText>
-                                {observedDt && (`${observedDt.getFullYear()}${observedDt.getMonth() + 1}${observedDt.getDate()}${observedDt.getHours()}${observedDt.getMinutes()}`)}
-                            </CustomText>
+        return (
+            <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
+                <ScrollView style={globalStyles.commonContainer}>
+                    <View style={searchAndCleanModeStyles.wrapper}>
+                        <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
+                        <View style={searchAndCleanModeStyles.textFlex}>
+                            <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
+                                              style={searchAndCleanModeStyles.textFlex}>
+                                <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
+                                <Icon
+                                    size={18}
+                                    name="chevron-forward-outline"
+                                    color={color.gray400}
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
-                </View>
 
-                <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>주요 쓰레기 - 총부피기준</CustomText>
-                    <TrashListItem litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}/>
-                </View>
+                    <View style={searchAndCleanModeStyles.wrapper}>
+                        <CustomText style={searchAndCleanModeStyles.title}>조사 사진</CustomText>
+                        {observedPicture && <View style={styles.containerStyle}><Image style={styles.observedImageStyle}
+                                                                                       source={{uri: observedPicture.uri}}/></View>}
+                        <CustomButton style={[searchAndCleanModeStyles.gray, searchAndCleanModeStyles.flexRow]}
+                                      callBack={showModalHandler}>
+                            <CustomText
+                                style={searchAndCleanModeStyles.imageButtonText}>{observedPicture ? '사진수정' : '사진등록'}</CustomText>
+                            <Icon size={20} name="add-circle" color={color.gray300}/>
+                            <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
+                                              setPicture={setObservedPicture}></PhotoPickerModal>
+                        </CustomButton>
+                    </View>
 
-                <View style={[searchAndCleanModeStyles.wrapper, searchAndCleanModeStyles.lastItem]}>
-                    <CustomText style={searchAndCleanModeStyles.title}>쓰레기 총 부피(L)</CustomText>
-                    <TextInput
-                        style={searchAndCleanModeStyles.input}
-                        value={estimationLiter?.toString()}
-                        onChangeText={handleChangeText}
-                    />
-                </View>
+                    <View style={searchAndCleanModeStyles.wrapper}>
+                        <CustomText style={searchAndCleanModeStyles.title}>조사 일시</CustomText>
+                        <View style={searchAndCleanModeStyles.textFlex}>
+                            <View style={searchAndCleanModeStyles.input}>
+                                <CustomText>
+                                    {observedDt && (`${observedDt.getFullYear()}${observedDt.getMonth() + 1}${observedDt.getDate()}${observedDt.getHours()}${observedDt.getMinutes()}`)}
+                                </CustomText>
+                            </View>
+                        </View>
+                    </View>
 
-            </ScrollView>
-            <CustomButton style={searchAndCleanModeStyles.confirmBtn}>
-                <CustomText style={searchAndCleanModeStyles.buttonText}>입력 완료</CustomText>
-            </CustomButton>
-        </SafeAreaView>
-    );
-};
+                    <View style={searchAndCleanModeStyles.wrapper}>
+                        <CustomText style={searchAndCleanModeStyles.title}>주요 쓰레기 - 총부피기준</CustomText>
+                        <TrashListItem litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}/>
+                    </View>
+
+                    <View style={[searchAndCleanModeStyles.wrapper, searchAndCleanModeStyles.lastItem]}>
+                        <CustomText style={searchAndCleanModeStyles.title}>쓰레기 총 부피(L)</CustomText>
+                        <TextInput
+                            style={searchAndCleanModeStyles.input}
+                            value={estimationLiter?.toString()}
+                            onChangeText={handleChangeText}
+                        />
+                    </View>
+
+                </ScrollView>
+                <CustomButton style={searchAndCleanModeStyles.confirmBtn} callBack={registerObserveData}>
+                    <CustomText style={searchAndCleanModeStyles.buttonText}>입력 완료</CustomText>
+                </CustomButton>
+            </SafeAreaView>
+        );
+    }
+;
 
 export default SearchModeScreen;
 
