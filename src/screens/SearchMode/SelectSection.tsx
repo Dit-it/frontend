@@ -2,7 +2,7 @@ import CustomText from '@/components/Common/CustomText';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {RootStackParamList} from '../navigationTypes';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import HeaderLeftGoBack from '@/components/Common/HeaderLeftGoBack';
 import NaverMap from '@/components/NaverMap/NaverMap';
 import {SafeAreaView, View} from 'react-native';
@@ -13,12 +13,16 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 import color from '@/constant/color';
 import CarouselContainer from '@/components/NaverMap/CarouselContainer';
-import GetPermissionModal from '@/components/GetPermission/GetPermissionModal';
 import {getCoastListByCode, getSigunguInfo} from '@/apis/selectSection';
-import {ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
+import {ICoastDropData, ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
 import {useQuery} from 'react-query';
+import NaverMapPolyLine from "@components/NaverMap/NaverMapPolyLine.tsx";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+interface RouteParams {
+  sigunguCode: string; // 전달한 인자의 타입을 명시
+  sigunguName: string; // 전달한 인자의 타입을 명시
+}
 
 const SelectSection = () => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
@@ -26,7 +30,19 @@ const SelectSection = () => {
   const [sigunguValue, setSigunguValue] = useState<ISigunguDropData | null>(
     null,
   );
+  const [coastValue, setCoastValue] = useState<ICoastDropData | null>(
+      null,
+  );
   const [isFocus, setIsFocus] = useState(false);
+  const route = useRoute();
+  const { sigunguCode, sigunguName} = route.params as RouteParams;
+
+  useEffect(() => {
+    if (sigunguCode && sigunguName) {
+      console.log('sigunguCode: ', sigunguCode, 'sigunguName: ', sigunguName);
+      setSigunguValue({label: sigunguName, value: sigunguCode});
+    }
+  }, [sigunguCode]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,7 +82,7 @@ const SelectSection = () => {
     () => getCoastListByCode(sigunguValue?.value),
   );
   useEffect(()=>{
-    console.log("coastListResponseData: ",coastListResponseData);
+    // console.log("coastListResponseData: ",coastListResponseData);
   },[coastListResponseData])
 
   return (
@@ -109,10 +125,34 @@ const SelectSection = () => {
 
             <View style={styles.dropdownContainer}>
               {/* {renderLabel()} */}
+              <Dropdown
+                  style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  itemTextStyle={styles.itemContainerStyle}
+                  iconStyle={styles.iconStyle}
+                  data={coastListResponseData ? coastListResponseData : []}
+                  maxHeight={200}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={!isFocus ? '해안명 선택' : '...'}
+                  searchPlaceholder="Search..."
+                  value={coastListResponseData?.[0].coastCode}
+                  onFocus={() => setIsFocus(true)}
+                  onBlur={() => setIsFocus(false)}
+                  onChange={item => {
+                    setCoastValue({
+                      label: item.label,
+                      value: item.value,
+                    });
+                    setIsFocus(false);
+                  }}
+              />
             </View>
           </View>
         </View>
-        {/* <NaverMapPolyLine /> */}
+         {/*<NaverMapPolyLine />*/}
 
         <View style={styles.appBackground}>
           <View style={styles.carouselBox}>

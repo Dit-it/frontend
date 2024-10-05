@@ -1,5 +1,5 @@
 import {nAssert} from '@/services/nAseert';
-import {default as NativeNaverMapPolyline} from '../../services/RNCNaverMapPolylineNativeComponent';
+// import {default as NativeNaverMapPolyline} from '../../services/RNCNaverMapPolylineNativeComponent';
 import {
   BaseOverlayProps,
   CapType,
