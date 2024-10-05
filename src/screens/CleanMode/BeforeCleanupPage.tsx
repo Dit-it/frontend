@@ -14,7 +14,7 @@ import PictureBox from "@components/Common/PictureBox.tsx";
 const BeforeCleanupPage = ({
                                navigation,
                                beforeCleanupPicture, setBeforeCleanupPicture, litterTypeCode, setLitterTypeCode,
-                               showAfterCleanupModalHandler
+                               showAfterCleanupModalHandler, coastCode, coastName, coastlineLen
                            }: React.ComponentProps<any>) => {
     return (
         <>
@@ -22,15 +22,21 @@ const BeforeCleanupPage = ({
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>해안</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
-                        <TouchableOpacity onPress={() => navigation.navigate('SelectSection')}
+                        <TouchableOpacity onPress={() => navigation.navigate('SelectSigunguClean')}
                                           style={searchAndCleanModeStyles.textFlex}>
-                            <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
-                            <Icon
-                                size={18}
-                                name="chevron-forward-outline"
-                                color={color.gray400}
-                            />
+                            {!coastCode &&
+                                <>
+                                    <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
+                                    <Icon
+                                        size={18}
+                                        name="chevron-forward-outline"
+                                        color={color.gray400}
+                                    />
+                                </>
+                            }
                         </TouchableOpacity>
+                        {coastCode && <CustomText
+                            style={searchAndCleanModeStyles.textGray}>{coastName} / {coastlineLen} m </CustomText>}
                     </View>
                 </View>
 

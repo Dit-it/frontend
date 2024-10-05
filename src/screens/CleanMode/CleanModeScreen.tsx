@@ -37,7 +37,7 @@ const CleanModeScreen = () => {
         longitude: number;
     } | null>(null);
     const [count50Liter, setCount50Liter] = useState<number | null>(null);
-    const {data} = useQuery('observeDataId', async () => await (await fetch(`https://www.didit.store/api/v1/observe/isBeforeCleanup/${coastCode}`)).json());
+    const {data} = useQuery('observeDataId', async () => await (await fetch(`https://www.didit.store/api/v1/observe/isBeforeCleanup/${coastCode}`)).text());
 
     const route = useRoute();
     const {coastCode, coastName, coastlineLen} = route.params as RouteParams || {coastCode: null};
@@ -76,6 +76,7 @@ const CleanModeScreen = () => {
     // post cleanup data
     const postCleanupData = async () => {
         const formData = new FormData();
+        console.log('aa:', data);
         formData.append('observedDataId', data);
         formData.append('beforeCleanupPicture', {
             uri: beforeCleanupPicture?.uri,
@@ -117,7 +118,8 @@ const CleanModeScreen = () => {
                 <BeforeCleanupPage navigation={navigation} beforeCleanupPicture={beforeCleanupPicture}
                                    setBeforeCleanupPicture={setBeforeCleanupPicture}
                                    litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}
-                                   showAfterCleanupModalHandler={showAfterCleanupPageHandler}/>
+                                   showAfterCleanupModalHandler={showAfterCleanupPageHandler}
+                coastCode={coastCode} coastName={coastName} coastlineLen={coastlineLen}/>
                 : <AfterCleanupPage afterCleanupPicture={afterCleanupPicture}
                                     setAfterCleanupPicture={setAfterCleanupPicture}
                                     collectionPicture={collectionPicture}

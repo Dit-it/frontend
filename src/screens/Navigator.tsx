@@ -10,6 +10,8 @@ import SelectSigungu from './SearchMode/SelectSigungu.tsx';
 import CleanModeScreen from '@screens/CleanMode/CleanModeScreen.tsx';
 import AdminModeScreen from './AdminMode/AdminModeScreen.tsx';
 import DriverModeScreen from "@screens/DriverMode/DriverModeScreen.tsx";
+import SelectSigunguClean from "@screens/SearchMode/SelectSigunguClean.tsx";
+import SelectSectionClean from "@screens/SearchMode/SelectSectionClean.tsx";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -36,6 +38,8 @@ const Navigator = () => {
       />
       <RootStack.Screen name="SelectSigungu" component={SelectSigungu} />
       <RootStack.Screen name="SelectSection" component={SelectSection} />
+      <RootStack.Screen name="SelectSigunguClean" component={SelectSigunguClean} />
+      <RootStack.Screen name="SelectSectionClean" component={SelectSectionClean} />
       <RootStack.Screen
         name="AdminMode"
         component={AdminModeScreen}
