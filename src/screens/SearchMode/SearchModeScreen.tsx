@@ -20,6 +20,8 @@ import {getDateString} from "@/services/dateUtils.ts";
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 interface RouteParams {
     coastCode?: number | null;
+    coastName?: string | null;
+    coastlineLen?: string | null;
 }
 const SearchModeScreen = () => {
         const navigation = useNavigation<RegisterScreenNavigationProp>();
@@ -38,7 +40,7 @@ const SearchModeScreen = () => {
         const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
 
     const route = useRoute();
-    const { coastCode } = route.params as RouteParams || { coastCode: null };
+    const { coastCode, coastName, coastlineLen } = route.params as RouteParams || { coastCode: null };
 
     console.log(coastCode)
 
@@ -98,13 +100,18 @@ const SearchModeScreen = () => {
                         <View style={searchAndCleanModeStyles.textFlex}>
                             <TouchableOpacity onPress={() => navigation.navigate('SelectSigungu')}
                                               style={searchAndCleanModeStyles.textFlex}>
-                                <CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
+                                {!coastCode &&
+
+                                    <><CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
                                 <Icon
                                     size={18}
                                     name="chevron-forward-outline"
                                     color={color.gray400}
                                 />
+                                    </>
+                                }
                             </TouchableOpacity>
+                            {coastCode &&  <CustomText style={searchAndCleanModeStyles.textGray}>{coastName} / {coastlineLen} m </CustomText>}
                         </View>
                     </View>
 

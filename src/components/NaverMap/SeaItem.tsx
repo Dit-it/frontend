@@ -16,12 +16,11 @@ export interface SeaItemProps {
   coastLonlat: {
     coordinates: any;
     lat: number; lon: number; }
-  setCenter: (coastLonlat: { lat: number; lon: number; }) => void;
 }
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 
-const SeaItem = ({sigunguName, coastCode, coastName, coastlineLen, coastLonlat, setCenter}: SeaItemProps) => {
+const SeaItem = ({sigunguName, coastCode, coastName, coastlineLen, coastLonlat}: SeaItemProps) => {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   return (
@@ -43,13 +42,11 @@ const SeaItem = ({sigunguName, coastCode, coastName, coastlineLen, coastLonlat, 
 
       <CustomButton callBack={() => navigation.navigate('SearchMode', {
         coastCode: coastCode
+        , coastName: coastName
+        , coastlineLen: coastlineLen
       })}>
         <CustomText
             style={{color: 'white'}}
-            onPress={() => {
-              const [longitude, latitude] = coastLonlat.coordinates; // coordinates 배열에서 값을 추출
-              setCenter({ lat: latitude, lon: longitude }); // setCenter에 전달
-            }}
         >선택하기</CustomText>
       </CustomButton>
     </View>

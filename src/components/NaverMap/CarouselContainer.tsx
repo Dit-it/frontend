@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {useSharedValue} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
@@ -54,7 +54,6 @@ const CarouselContainer = ({data, setCenter}: CarouselContainerProps) => {
                 coastName={item.item.coastName}
                 coastlineLen={item.item.coastlineLen}
                 coastLonlat={item.item.coastLonlat}
-                setCenter={setCenter}
             />
         )}
       />
