@@ -6,4 +6,5 @@ export type RootStackParamList = {
   SelectSigungu: undefined;
   SelectSection: undefined;
   CleanupMode: undefined;
+  AdminMode: undefined;
 };

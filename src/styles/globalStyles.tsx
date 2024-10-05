@@ -1,5 +1,5 @@
 import color from '@/constant/color';
-import {StyleSheet} from 'react-native';
+import {Platform, StatusBar, StyleSheet} from 'react-native';
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -8,6 +8,7 @@ import {
 export const globalStyles = StyleSheet.create({
   commonSafeAreaFlex: {
     flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   commonContainer: {
     flex: 1,

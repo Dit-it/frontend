@@ -19,6 +19,7 @@ import {getCoastListByCode, getSigunguInfo} from '@/apis/selectSection';
 import {log} from '../../../node_modules/react-native-reanimated-carousel/src/utils/log';
 import {ISigunguData, ISigunguDropData} from '@/@types/sigunguTypes';
 import {useQuery} from 'react-query';
+import NaverMapPolyLine from '@/components/NaverMap/NaverMapPolyLine';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -114,26 +115,13 @@ const SelectSection = () => {
             </View>
           </View>
         </View>
-        {/* <NaverMap /> */}
+        {/* <NaverMapPolyLine /> */}
 
         <View style={styles.appBackground}>
           <View style={styles.carouselBox}>
             <CarouselContainer data={seaData} />
           </View>
         </View>
-        {/* <View>
-          <Carousel
-            images={[
-              'https://www.didit.store/img/ggu.png',
-              'https://img.hankyung.com/photo/202309/AKR20230901035200005_01_i_P4.jpg',
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSayzFV4TvY_t5ynst6FMKEchrntX5faQ6xVg&s',
-            ]}
-            gap={10}
-            offset={36}
-            pageWidth={screenWidth - (10 + 36) * 2}
-          />
-        </View> */}
-        {/* <CarouselContainer /> */}
       </View>
     </SafeAreaView>
   );
