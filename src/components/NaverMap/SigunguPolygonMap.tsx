@@ -26,9 +26,7 @@ const SigunguPolygonMap = ({polygon, regionList,
         latitude: 35.1796,
         longitude: 129.0756,
         zoom: 9
-      }}
-      onCameraChanged={(e) => console.log(e.latitude)}
-  >
+      }}>
         {polygon.map((p, polygonIndex) => (
             <NaverMapPolygonOverlay
                 key={polygonIndex}

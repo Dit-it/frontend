@@ -102,18 +102,6 @@ const GetPermissionModal = ({onHide}: GetPermissionModalProps) => {
             </View>
           </View>
 
-          <View style={styles.viewWrapper}>
-            <Image source={require('@assets/icon/dummy_icon.png')} />
-            <View style={styles.textWrapper}>
-              <View style={styles.viewWrapper}>
-                <CustomText style={styles.textTitle}>저장소</CustomText>
-                <CustomText style={styles.strong}>(필수)</CustomText>
-              </View>
-              <CustomText style={styles.subText}>
-                파일 및 미디어 저장 및 불러오기
-              </CustomText>
-            </View>
-          </View>
         </View>
         <CustomButton callBack={requestAllPermissions} style={styles.button}>
           <CustomText style={styles.textWhite}>권한 요청</CustomText>

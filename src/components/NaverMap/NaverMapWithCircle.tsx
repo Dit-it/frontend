@@ -47,8 +47,7 @@ const NaverMapWithCircle = ({
         latitude: 35.1796,
         longitude: 129.0756,
         zoom: 9,
-      }}
-      onCameraChanged={e => console.log(e.latitude)}>
+      }}>
       <NaverMapCircleOverlay
         latitude={33.17827398}
         longitude={126.349895729}

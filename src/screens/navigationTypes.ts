@@ -7,4 +7,5 @@ export type RootStackParamList = {
   SelectSection: { sigunguValue: string };
   CleanupMode: undefined;
   AdminMode: undefined;
+  DriverMode: undefined;
 };
