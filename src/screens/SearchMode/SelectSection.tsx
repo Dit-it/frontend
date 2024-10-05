@@ -78,11 +78,6 @@ const SelectSection = () => {
 
     getSigunguInfoHandler();
 
-    const seaData = [
-        {location: '해운대', seaName: '해안선A', seaLength: '25000'},
-        {location: '광안리', seaName: '해안선B', seaLength: '30000'},
-        {location: '송정', seaName: '해안선C', seaLength: '30000'},
-    ];
 
     const {data: coastListResponseData} = useQuery(
         ['COASTLIST', sigunguValue],
@@ -101,12 +96,20 @@ const SelectSection = () => {
                 for (let i = 0; i < flatArray.length - 2; i += 2) {
                     tempArray.push({latitude: flatArray[i + 1], longitude: flatArray[i]});
                 }
-                if(tempArray.length > 2)
-                polyLineArray.push(tempArray);
+                if(tempArray.length > 2) {
+                    polyLineArray.push(tempArray);
+                }
             }
             setCoordinates(polyLineArray);
         }
     }, [coastListResponseData])
+
+
+    const seaData = [
+        {location: '해운대', seaName: '해안선A', seaLength: '25000'},
+        {location: '광안리', seaName: '해안선B', seaLength: '30000'},
+        {location: '송정', seaName: '해안선C', seaLength: '30000'},
+    ];
 
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>

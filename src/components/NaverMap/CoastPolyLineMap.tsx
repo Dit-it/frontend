@@ -1,14 +1,15 @@
 import {
+    Coord,
     NaverMapPolylineOverlay,
-    NaverMapView,
+    NaverMapView, NaverMapViewRef,
 } from '@mj-studio/react-native-naver-map';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 // @ts-ignore
 const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSelectedCoastIndex} ) => {
-
+    const ref = useRef<NaverMapViewRef>(null);
     const [selectedPolyLineIndex, setSelectedPolyLineIndex] = useState(selectedCoastIndex);
 
     useEffect(() => {
@@ -21,6 +22,18 @@ const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSel
             setSelectedPolyLineIndex(selectedCoastIndex);
     }, [selectedCoastIndex])
 
+    const handleMapClick = (e: Coord) => {
+        // e에는 클릭된 위치의 latitude, longitude 값이 포함됨
+        if (ref.current) {
+            ref.current.animateCameraTo({
+                latitude: e.latitude, // 카메라를 이동시킬 지점의 위도
+                longitude: e.longitude, // 카메라를 이동시킬 지점의 경도
+                zoom: 12, // 원하는 줌 레벨 (생략 가능)
+                duration: 1000, // 애니메이션 지속 시간 (ms 단위)
+            });
+        }
+    };
+
     return <NaverMapView
         style={[mapType === 'minMap' ? styles.minMap : styles.fullMap]}
         initialCamera={{
@@ -28,6 +41,8 @@ const CoastPolyLineMap = ({line, mapType = 'fullMap', selectedCoastIndex, setSel
             longitude: 129.0756,
             zoom: 9
         }}
+        ref={ref}
+        onTapMap={handleMapClick}
     >
         {line.map((p, polyLineIndex) => (
             <NaverMapPolylineOverlay
