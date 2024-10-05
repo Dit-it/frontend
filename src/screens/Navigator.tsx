@@ -9,6 +9,7 @@ import SelectSection from './SearchMode/SelectSection';
 import SelectSigungu from './SearchMode/SelectSigungu.tsx';
 import CleanModeScreen from '@screens/CleanMode/CleanModeScreen.tsx';
 import AdminModeScreen from './AdminMode/AdminModeScreen.tsx';
+import DriverModeScreen from "@screens/DriverMode/DriverModeScreen.tsx";
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -48,6 +49,7 @@ const Navigator = () => {
         component={Splash}
         options={{headerShown: false}}
       />
+      <RootStack.Screen name="DriverMode" component={DriverModeScreen} />
       <RootStack.Screen
         name="CleanupMode"
         component={CleanModeScreen}

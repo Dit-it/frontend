@@ -9,9 +9,9 @@ import {Asset} from "react-native-image-picker";
 import AfterCleanupPage from "@screens/CleanMode/AfterCleanupPage.tsx";
 import BeforeCleanupPage from "@screens/CleanMode/BeforeCleanupPage.tsx";
 import Icon from "react-native-vector-icons/Ionicons";
-import Geolocation from '@react-native-community/geolocation';
 import {getDateString} from "@/services/dateUtils.ts";
 import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
+import {getLocation} from "@/services/getLocation.ts";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -55,24 +55,10 @@ const CleanModeScreen = () => {
         }
     }, [afterCleanupPicture]);
 
-    const getLocation = () => {
-        Geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude, accuracy } = position.coords;
-                console.log('accuracy ', accuracy);
-                setLocation({ latitude, longitude });
-            },
-            (error) => {
-                console.log(error.code, error.message);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-    }
-
     useEffect(() => {
         if (collectionPicture) {
             // 위치정보 가져오기
-            getLocation();
+            getLocation(setLocation);
         }
     }, [collectionPicture]);
 

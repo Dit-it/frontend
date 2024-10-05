@@ -28,8 +28,6 @@ export const LoginScreen = () => {
   const [value, setValue] = useState('');
 
   const loginSubmitHandler = () => {
-    // navigation.navigate('CleanupMode');
-    // navigation.navigate('SelectSigungu');
     if (value === 'search') {
       navigation.navigate('SearchMode');
     } else if (value === 'admin') {
@@ -37,7 +35,7 @@ export const LoginScreen = () => {
     } else if (value === 'clean') {
       navigation.navigate('CleanupMode');
     } else if (value === 'car') {
-      navigation.navigate('SearchMode');
+      navigation.navigate('DriverMode');
     }
   };
 
