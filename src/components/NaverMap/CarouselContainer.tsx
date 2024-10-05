@@ -50,6 +50,7 @@ const CarouselContainer = ({data, setCenter}: CarouselContainerProps) => {
         renderItem={item => (
             <SeaItem
                 sigunguName={item.item.sigunguName}
+                coastCode={item.item.coastCode}
                 coastName={item.item.coastName}
                 coastlineLen={item.item.coastlineLen}
                 coastLonlat={item.item.coastLonlat}

@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {Alert, Image, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableOpacity, View,} from 'react-native';
@@ -18,7 +18,9 @@ import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
 import {getDateString} from "@/services/dateUtils.ts";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
-
+interface RouteParams {
+    coastCode?: number | null;
+}
 const SearchModeScreen = () => {
         const navigation = useNavigation<RegisterScreenNavigationProp>();
 
@@ -34,6 +36,11 @@ const SearchModeScreen = () => {
         const [litterTypeCode, setLitterTypeCode] = useState<string | null>(null);
         const [observedDt, setObservedDt] = useState<Date | null>(null);
         const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
+
+    const route = useRoute();
+    const { coastCode } = route.params as RouteParams || { coastCode: null };
+
+    console.log(coastCode)
 
         const showModalHandler = async () => {
             const result = await showCameraModalHandler();

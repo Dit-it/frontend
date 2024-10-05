@@ -2,7 +2,7 @@ export type RootStackParamList = {
   Splash: undefined;
   Login: undefined;
   Register: undefined;
-  SearchMode: undefined;
+  SearchMode: { coastCode: number };
   SelectSigungu: undefined;
   SelectSection: { sigunguValue: string };
   CleanupMode: undefined;

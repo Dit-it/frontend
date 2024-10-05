@@ -14,8 +14,8 @@ import CoastPolyLineMap from "@components/NaverMap/CoastPolyLineMap.tsx";
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 interface RouteParams {
-    sigunguCode: string; // 전달한 인자의 타입을 명시
-    sigunguName: string; // 전달한 인자의 타입을 명시
+    sigunguCode: string;
+    sigunguName: string;
 }
 
 const SelectSection = () => {
