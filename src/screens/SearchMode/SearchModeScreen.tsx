@@ -29,10 +29,6 @@ const SearchModeScreen = () => {
     const [searchImage, setSearchImage] = useState<Asset | null>(null);
     const [modalVisible, setModalVisible] = useState<Boolean>(false);
 
-    useEffect(() => {
-        console.log(searchImage);
-    }, [searchImage]);
-
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
             <ScrollView style={globalStyles.commonContainer}>

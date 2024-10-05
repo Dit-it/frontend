@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import CustomText from '../Common/CustomText';
 import color from '@/constant/color';
@@ -12,6 +12,19 @@ const trashItems = [
 ];
 
 const TrashListItem = () => {
+
+  const fetchTrashListItem = async () => {
+    return await (await fetch('https://www.didit.store/api/v1/litter')).json();
+  }
+
+  useEffect(() => {
+    fetchTrashListItem().then(
+        data => {
+          console.log('trashListItem: ', data);
+        }
+    )
+  }, []);
+
   return (
     <View style={styles.container}>
       {trashItems.map((item, index) => (
