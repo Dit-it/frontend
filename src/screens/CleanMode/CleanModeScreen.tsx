@@ -30,7 +30,7 @@ const SearchModeScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: '조사모드',
+      headerTitle: '청소모드',
       headerLeft: () => <HeaderLeftGoBack navigation={navigation} />,
     });
   }, [navigation]);
@@ -68,6 +68,20 @@ const SearchModeScreen = () => {
             <PhotoPickerModal modalVisible={modalVisible} setModalVisible={setModalVisible}
                               setSearchImage={setSearchImage}></PhotoPickerModal>
           </CustomButton>
+        </View>
+
+        <View style={styles.wrapper}>
+          <CustomText style={styles.title}>위·경도</CustomText>
+          <View style={styles.flex}>
+            <View style={styles.inputPosition}>
+              <CustomText style={styles.inputAbsoluteText}>위도</CustomText>
+              <TextInput style={styles.input} autoCapitalize="none" />
+            </View>
+            <View style={styles.inputPosition}>
+              <CustomText style={styles.inputAbsoluteText}>경도</CustomText>
+              <TextInput style={styles.input} autoCapitalize="none" />
+            </View>
+          </View>
         </View>
 
         <View style={styles.wrapper}>
