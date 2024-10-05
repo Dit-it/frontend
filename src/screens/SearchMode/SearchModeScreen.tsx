@@ -31,6 +31,7 @@ const SearchModeScreen = () => {
     const [modalVisible, setModalVisible] = useState<Boolean>(false);
     const [litterTypeCode, setLitterTypeCode] = useState<string | null>(null);
     const [observedDt, setObservedDt] = useState<Date | null>(null);
+    const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
 
     const showModalHandler = async () => {
         const result = await showCameraModalHandler();
@@ -47,6 +48,13 @@ const SearchModeScreen = () => {
             setObservedDt(new Date());
         }
     }, [observedPicture]);
+
+    // 숫자만 입력하게 필터링
+    const handleChangeText = (text: string) => {
+        // 숫자만 입력 가능하게 필터
+        const numericText = text.replace(/[^0-9]/g, '');
+        setEstimationLiter(+numericText);
+    };
 
     return (
         <SafeAreaView style={globalStyles.commonSafeAreaFlex}>
@@ -83,8 +91,8 @@ const SearchModeScreen = () => {
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>조사 일시</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
-                        <View style={searchAndCleanModeStyles.inputPosition}>
-                            <CustomText style={searchAndCleanModeStyles.input}>
+                        <View style={searchAndCleanModeStyles.input}>
+                            <CustomText>
                                 {observedDt && (`${observedDt.getFullYear()}${observedDt.getMonth() + 1}${observedDt.getDate()}${observedDt.getHours()}${observedDt.getMinutes()}`)}
                             </CustomText>
                         </View>
@@ -94,6 +102,15 @@ const SearchModeScreen = () => {
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>주요 쓰레기 - 총부피기준</CustomText>
                     <TrashListItem litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}/>
+                </View>
+
+                <View style={[searchAndCleanModeStyles.wrapper, searchAndCleanModeStyles.lastItem]}>
+                    <CustomText style={searchAndCleanModeStyles.title}>쓰레기 총 부피(L)</CustomText>
+                    <TextInput
+                        style={searchAndCleanModeStyles.input}
+                        value={estimationLiter?.toString()}
+                        onChangeText={handleChangeText}
+                    />
                 </View>
 
             </ScrollView>

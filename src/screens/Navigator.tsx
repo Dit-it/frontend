@@ -14,7 +14,7 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
-    <RootStack.Navigator initialRouteName="SearchMode">
+    <RootStack.Navigator initialRouteName="Login">
       <RootStack.Screen
         name="Login"
         component={LoginScreen}

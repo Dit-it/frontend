@@ -41,7 +41,6 @@ const TrashListItem = ({litterTypeCode, setLitterTypeCode}) => {
                     key={item.litterTypeCode}
                     style={[
                         styles.item,
-                        index === data.length - 1 && styles.lastItem,
                         {backgroundColor: litterTypeCode === item.litterTypeCode ? color.primary : color.gray100},
                     ]}>
                     <View style={styles.description}>
@@ -71,9 +70,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         marginBottom: 8,
-    },
-    lastItem: {
-        marginBottom: 80,
     },
     description: {
         flexDirection: 'row',

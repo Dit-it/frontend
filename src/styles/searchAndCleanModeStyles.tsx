@@ -29,13 +29,13 @@ export const searchAndCleanModeStyles = StyleSheet.create({
         marginBottom: 12,
     },
     flex: {
-        width: '49%',
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     inputPosition: {
         position: 'relative',
-        width: '100%',
+        width: '49%',
     },
     input: {
         width: '100%',
@@ -69,5 +69,8 @@ export const searchAndCleanModeStyles = StyleSheet.create({
         // paddingTop: 10,
         height: 70,
         borderRadius: 0,
+    },
+    lastItem: {
+        marginBottom: 120,
     },
 })

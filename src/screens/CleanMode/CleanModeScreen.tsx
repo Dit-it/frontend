@@ -67,8 +67,10 @@ const CleanModeScreen = () => {
     }
 
     useEffect(() => {
-        // 위치정보 가져오기
-        getLocation();
+        if (collectionPicture) {
+            // 위치정보 가져오기
+            getLocation();
+        }
     }, [collectionPicture]);
 
     return (

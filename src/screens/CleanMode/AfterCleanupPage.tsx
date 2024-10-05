@@ -24,8 +24,8 @@ const AfterCleanupPage = ({
                 <View style={searchAndCleanModeStyles.wrapper}>
                     <CustomText style={searchAndCleanModeStyles.title}>청소 일시</CustomText>
                     <View style={searchAndCleanModeStyles.textFlex}>
-                        <View style={searchAndCleanModeStyles.inputPosition}>
-                            <CustomText style={searchAndCleanModeStyles.input}>
+                        <View style={searchAndCleanModeStyles.input}>
+                            <CustomText>
                                 {cleanupDt && (`${cleanupDt.getFullYear()}${cleanupDt.getMonth() + 1}${cleanupDt.getDate()}${cleanupDt.getHours()}${cleanupDt.getMinutes()}`)}
                             </CustomText>
                         </View>
@@ -46,9 +46,9 @@ const AfterCleanupPage = ({
                         </View>
                     </View>
                 </View>
-                <View style={searchAndCleanModeStyles.inputPosition}>
+                <View style={searchAndCleanModeStyles.flex} >
                     <TextInput
-                        style={searchAndCleanModeStyles.input}
+                        style={[searchAndCleanModeStyles.input, searchAndCleanModeStyles.lastItem]}
                         placeholder="집하장소에 대한 부가설명을 적어주세요."
                         autoCapitalize="none"
                         value={collectionLocationMemo}

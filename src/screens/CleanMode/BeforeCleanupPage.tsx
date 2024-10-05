@@ -37,7 +37,7 @@ const BeforeCleanupPage = ({
                 <PictureBox picture={beforeCleanupPicture} setPicture={setBeforeCleanupPicture}
                             title={'청소 전 사진'}/>
 
-                <View style={searchAndCleanModeStyles.wrapper}>
+                <View style={[searchAndCleanModeStyles.wrapper, searchAndCleanModeStyles.lastItem]}>
                     <CustomText style={searchAndCleanModeStyles.title}>주요 쓰레기 - 총부피기준</CustomText>
                     <TrashListItem litterTypeCode={litterTypeCode} setLitterTypeCode={setLitterTypeCode}/>
                 </View>
