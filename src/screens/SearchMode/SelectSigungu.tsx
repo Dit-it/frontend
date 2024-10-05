@@ -1,8 +1,8 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {globalStyles} from '@/styles/globalStyles';
 import color from "@/constant/color.ts";
-import {heightPercentageToDP} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "@screens/navigationTypes.ts";
 import CustomText from "@components/Common/CustomText.tsx";
@@ -10,6 +10,7 @@ import HeaderLeftGoBack from "@components/Common/HeaderLeftGoBack.tsx";
 import {useNavigation} from "@react-navigation/native";
 import NaverMap from '@/components/NaverMap/NaverMap';
 import {parse} from "@babel/core";
+import {CustomButton} from "@components/Common/CustomButton.tsx";
 
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -22,6 +23,7 @@ const SelectSigungu = () => {
 
     const [sigunguList, setSigunguList] = useState([]);
     const [coordinates, setCoordinates] =  useState<Coordinate[][]>([]);
+    const [selectedRegionIndex, setSelectedRegionIndex] =  useState<number>(0);
 
     const navigation = useNavigation<RegisterScreenNavigationProp>();
 
@@ -58,7 +60,6 @@ const SelectSigungu = () => {
                 let flatArray = geometry.flat(Infinity);
                 for (let i = 0; i < flatArray.length - 2; i+=2) {
                     tempArray.push({latitude: flatArray[i+1], longitude: flatArray[i]});
-
                 }
                 polygonArray.push(tempArray);
             }
@@ -74,20 +75,35 @@ const SelectSigungu = () => {
                     {coordinates.length > 0 && (
                         <NaverMap
                             polygon={coordinates}
+                            regionList={sigunguList}
                             mapType={'minMap'}
+                            selectedRegionIndex={selectedRegionIndex}
+                            setSelectedRegionIndex={setSelectedRegionIndex}
+                            // onTabMap={onTabMap}
                         />
                     )}
-
-                    {/* sigunguList가 존재하고 배열일 때 map 함수 사용 */}
-                    {sigunguList.length > 0 ? (
-                        sigunguList.map((item: {sigunguName: string}, index) => (
-                            <CustomText key={index}>
+                    <View style={styles.regionListWrapper}>
+                        {sigunguList.length > 0 && sigunguList.map((item, index) => (
+                            <CustomText
+                                key={index}
+                                style={[
+                                    styles.regionBtn,
+                                    { color: selectedRegionIndex === index ? 'rgba(16, 77, 208, 1)' : color.gray300 },
+                                    { borderColor: selectedRegionIndex === index ? 'rgba(16, 77, 208, 1)' : color.gray300 }
+                                ]}
+                                onPress={() => {
+                                    setSelectedRegionIndex(index);
+                                }}
+                            >
                                 {item.sigunguName}
                             </CustomText>
-                        ))
-                    ) : (
-                        <CustomText>Loading...</CustomText> // 데이터가 없을 때 로딩 메시지 표시
-                    )}
+                        ))}
+                    </View>
+                </View>
+                <View style={styles.infoText}>
+                    <CustomButton onPress={() => navigation.navigate('SelectSection')}>
+                        <CustomText style={styles.buttonText}>다음</CustomText>
+                    </CustomButton>
                 </View>
             </View>
         </SafeAreaView>
@@ -106,11 +122,23 @@ const styles = StyleSheet.create({
     },
     mapContainer: {
         flex: 1,
-        width: '90%',
-        borderStyle: 'solid',
+        width: '100%',
+        height: heightPercentageToDP(40),
+        position: 'relative',
+    },
+    regionListWrapper: {
+        margin: 15,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
+    regionBtn: {
+        alignSelf: 'flex-start',
         borderWidth: 1,
         borderColor: color.gray300,
-        position: 'relative',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        margin: 5,
+        borderRadius: 20,
     },
     topSectionWrapper: {
         flexDirection: 'row',
@@ -173,5 +201,21 @@ const styles = StyleSheet.create({
         // justifyContent: 'flex-end',
         height: 200,
         // width: '70%',
+    },
+    infoText: {
+        width: widthPercentageToDP(80),
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 100,
+        alignSelf: 'center',
+    },
+    linkText: {
+        color: color.gray500,
+        fontSize: heightPercentageToDP('1.7%'),
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 500,
     },
 });
