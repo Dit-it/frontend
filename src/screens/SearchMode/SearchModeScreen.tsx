@@ -18,11 +18,13 @@ import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
 import {getDateString} from "@/services/dateUtils.ts";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 interface RouteParams {
     coastCode?: number | null;
     coastName?: string | null;
     coastlineLen?: string | null;
 }
+
 const SearchModeScreen = () => {
         const navigation = useNavigation<RegisterScreenNavigationProp>();
 
@@ -39,10 +41,8 @@ const SearchModeScreen = () => {
         const [observedDt, setObservedDt] = useState<Date | null>(null);
         const [estimationLiter, setEstimationLiter] = useState<number | null>(null);
 
-    const route = useRoute();
-    const { coastCode, coastName, coastlineLen } = route.params as RouteParams || { coastCode: null };
-
-    console.log(coastCode)
+        const route = useRoute();
+        const {coastCode, coastName, coastlineLen} = route.params as RouteParams || {coastCode: null};
 
         const showModalHandler = async () => {
             const result = await showCameraModalHandler();
@@ -76,7 +76,7 @@ const SearchModeScreen = () => {
                 type: observedPicture?.type || 'image/jpeg',
                 name: observedPicture?.fileName || 'observedPicture.jpg'
             });
-            formData.append('coastCode', 34);
+            formData.append('coastCode', coastCode);
             formData.append('litterTypeCode', litterTypeCode);
             if (observedDt) {
                 formData.append('observedDt', getDateString(observedDt));
@@ -103,15 +103,16 @@ const SearchModeScreen = () => {
                                 {!coastCode &&
 
                                     <><CustomText style={searchAndCleanModeStyles.textGray}>해안 선택하기</CustomText>
-                                <Icon
-                                    size={18}
-                                    name="chevron-forward-outline"
-                                    color={color.gray400}
-                                />
+                                        <Icon
+                                            size={18}
+                                            name="chevron-forward-outline"
+                                            color={color.gray400}
+                                        />
                                     </>
                                 }
                             </TouchableOpacity>
-                            {coastCode &&  <CustomText style={searchAndCleanModeStyles.textGray}>{coastName} / {coastlineLen} m </CustomText>}
+                            {coastCode && <CustomText
+                                style={searchAndCleanModeStyles.textGray}>{coastName} / {coastlineLen} m </CustomText>}
                         </View>
                     </View>
 

@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {Alert, Pressable, SafeAreaView, StyleSheet, View,} from 'react-native';
@@ -12,8 +12,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {getDateString} from "@/services/dateUtils.ts";
 import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
 import {getLocation} from "@/services/getLocation.ts";
+import {useQuery} from "react-query";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
+interface RouteParams {
+    coastCode?: number | null;
+    coastName?: string | null;
+    coastlineLen?: string | null;
+}
 
 const CleanModeScreen = () => {
     const navigation = useNavigation<RegisterScreenNavigationProp>();
@@ -30,6 +37,10 @@ const CleanModeScreen = () => {
         longitude: number;
     } | null>(null);
     const [count50Liter, setCount50Liter] = useState<number | null>(null);
+    const {data} = useQuery('observeDataId', async () => await (await fetch(`https://www.didit.store/api/v1/observe/isBeforeCleanup/${coastCode}`)).json());
+
+    const route = useRoute();
+    const {coastCode, coastName, coastlineLen} = route.params as RouteParams || {coastCode: null};
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -65,7 +76,7 @@ const CleanModeScreen = () => {
     // post cleanup data
     const postCleanupData = async () => {
         const formData = new FormData();
-        formData.append('observedDataId', 'OD00000000000022');
+        formData.append('observedDataId', data);
         formData.append('beforeCleanupPicture', {
             uri: beforeCleanupPicture?.uri,
             type: beforeCleanupPicture?.type || 'image/jpeg',
