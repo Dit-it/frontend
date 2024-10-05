@@ -6,12 +6,13 @@ import {RootStackParamList} from './navigationTypes';
 import SearchModeScreen from './SearchMode/SearchModeScreen';
 import {LoginScreen} from './Login/LoginScreen';
 import SelectSection from './SearchMode/SelectSection';
+import SelectSigungu from './SearchMode/SelectSigungu.tsx';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
-    <RootStack.Navigator initialRouteName="Login">
+    <RootStack.Navigator initialRouteName="SelectSigungu">
       <RootStack.Screen
         name="Login"
         component={LoginScreen}
@@ -23,6 +24,7 @@ const Navigator = () => {
         options={{headerShown: false}}
       />
       <RootStack.Screen name="SearchMode" component={SearchModeScreen} />
+      <RootStack.Screen name="SelectSigungu" component={SelectSigungu} />
       <RootStack.Screen name="SelectSection" component={SelectSection} />
       <RootStack.Screen
         name="Splash"
