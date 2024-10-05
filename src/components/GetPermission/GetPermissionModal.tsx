@@ -31,8 +31,6 @@ const GetPermissionModal = ({onHide}: GetPermissionModalProps) => {
         : [
             PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION, // 위치 권한 (Android)
             PERMISSIONS.ANDROID.CAMERA, // 카메라 권한 (Android)
-            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE, // 사진 라이브러리 권한 (Android)
-            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE, // 미디어 라이브러리 권한 (Android)
           ];
 
     try {
