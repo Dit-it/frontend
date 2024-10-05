@@ -8,8 +8,7 @@ import {RootStackParamList} from "@screens/navigationTypes.ts";
 import CustomText from "@components/Common/CustomText.tsx";
 import HeaderLeftGoBack from "@components/Common/HeaderLeftGoBack.tsx";
 import {useNavigation} from "@react-navigation/native";
-import NaverMap from '@/components/NaverMap/NaverMap';
-import {parse} from "@babel/core";
+import SigunguPolygonMap from '@components/NaverMap/SigunguPolygonMap.tsx';
 import {CustomButton} from "@components/Common/CustomButton.tsx";
 
 
@@ -72,7 +71,7 @@ const SelectSigungu = () => {
             <View style={globalStyles.commonContainer}>
                 <View style={styles.mapContainer}>
                     {coordinates.length > 0 && (
-                        <NaverMap
+                        <SigunguPolygonMap
                             polygon={coordinates}
                             regionList={sigunguList}
                             mapType={'minMap'}

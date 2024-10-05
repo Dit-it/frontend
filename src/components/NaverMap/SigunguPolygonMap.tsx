@@ -4,7 +4,7 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import {heightPercentageToDP} from 'react-native-responsive-screen';
 
 // @ts-ignore
-const NaverMap = ( {polygon, regionList,
+const SigunguPolygonMap = ({polygon, regionList,
                        mapType = 'fullMap', selectedRegionIndex, setSelectedRegionIndex} ) => {
 
     const [selectedPolygonIndex, setSelectedPolygonIndex] = useState(selectedRegionIndex);
@@ -45,7 +45,7 @@ const NaverMap = ( {polygon, regionList,
   </NaverMapView>
 };
 
-export default NaverMap;
+export default SigunguPolygonMap;
 
 const styles = StyleSheet.create({
   minMap: {
