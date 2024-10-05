@@ -14,7 +14,7 @@ const AfterCleanupPage = ({
                               collectionLocationMemo,
                               setCollectionLocationMemo,
                               location, count50Liter,
-                              cleanupDt, setCount50Liter
+                              cleanupDt, setCount50Liter, postCleanupData
                           }: React.ComponentProps<any>) => {
     // 숫자만 입력하게 필터링
     const handleChangeText = (text: string) => {
@@ -22,6 +22,7 @@ const AfterCleanupPage = ({
         const numericText = text.replace(/[^0-9]/g, '');
         setCount50Liter(+numericText);
     };
+
     return (
         <>
             <ScrollView style={globalStyles.commonContainer}>
@@ -38,7 +39,7 @@ const AfterCleanupPage = ({
                     </View>
                 </View>
                 <View style={searchAndCleanModeStyles.wrapper}>
-                    <CustomText style={searchAndCleanModeStyles.title}>쓰레기 포대 수(50L)</CustomText>
+                    <CustomText style={searchAndCleanModeStyles.title}>50L 쓰레기 포대 수(개)</CustomText>
                     <TextInput
                         style={searchAndCleanModeStyles.input}
                         value={count50Liter?.toString()}
@@ -70,7 +71,7 @@ const AfterCleanupPage = ({
                     />
                 </View>
             </ScrollView>
-            <CustomButton style={searchAndCleanModeStyles.confirmBtn}>
+            <CustomButton style={searchAndCleanModeStyles.confirmBtn} callBack={() => postCleanupData()}>
                 <CustomText style={searchAndCleanModeStyles.buttonText}>청소 완료</CustomText>
             </CustomButton>
         </>

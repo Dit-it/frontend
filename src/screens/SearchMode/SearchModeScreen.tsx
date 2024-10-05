@@ -15,6 +15,7 @@ import {Asset} from "react-native-image-picker";
 import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
 import {showCameraModalHandler} from '@/services/cameraPermission';
 import {postMultipartFormData} from "@/services/postMultipartFormData.ts";
+import {getDateString} from "@/services/dateUtils.ts";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -68,12 +69,9 @@ const SearchModeScreen = () => {
             });
             formData.append('coastCode', 34);
             formData.append('litterTypeCode', litterTypeCode);
-            formData.append('observedDt', `${observedDt?.getFullYear()}${
-                // @ts-ignore
-                observedDt?.getMonth() + 1 > 9 ? observedDt?.getMonth() + 1 : '0' + (observedDt?.getMonth() + 1)}${
-                // @ts-ignore
-                observedDt?.getDate() > 9 ? observedDt?.getDate() : '0' + observedDt?.getDate()}${
-                observedDt?.getHours()}${observedDt?.getMinutes()}`);
+            if (observedDt) {
+                formData.append('observedDt', getDateString(observedDt));
+            }
             formData.append('estimationLiter', estimationLiter);
 
             postMultipartFormData(formData, 'api/v1/observe/register').then();
