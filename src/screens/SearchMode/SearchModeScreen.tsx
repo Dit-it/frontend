@@ -135,7 +135,7 @@ const SearchModeScreen = () => {
                         <View style={searchAndCleanModeStyles.textFlex}>
                             <View style={searchAndCleanModeStyles.input}>
                                 <CustomText>
-                                    {observedDt && (`${observedDt.getFullYear()}${observedDt.getMonth() + 1}${observedDt.getDate()}${observedDt.getHours()}${observedDt.getMinutes()}`)}
+                                    {observedDt && (`${getDateString(observedDt)}`)}
                                 </CustomText>
                             </View>
                         </View>

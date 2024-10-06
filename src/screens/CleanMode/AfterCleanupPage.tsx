@@ -5,6 +5,7 @@ import {searchAndCleanModeStyles} from "@/styles/searchAndCleanModeStyles.tsx";
 import CustomText from "@components/Common/CustomText.tsx";
 import {CustomButton} from "@components/Common/CustomButton.tsx";
 import PictureBox from "@components/Common/PictureBox.tsx";
+import {getDateString} from "@/services/dateUtils.ts";
 
 const AfterCleanupPage = ({
                               afterCleanupPicture,
@@ -33,7 +34,7 @@ const AfterCleanupPage = ({
                     <View style={searchAndCleanModeStyles.textFlex}>
                         <View style={searchAndCleanModeStyles.input}>
                             <CustomText>
-                                {cleanupDt && (`${cleanupDt.getFullYear()}${cleanupDt.getMonth() + 1}${cleanupDt.getDate()}${cleanupDt.getHours()}${cleanupDt.getMinutes()}`)}
+                                {cleanupDt && getDateString(cleanupDt)}
                             </CustomText>
                         </View>
                     </View>
